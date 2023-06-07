@@ -7,8 +7,6 @@ import {setUser} from 'store/slices/userSlice'
 import AuthForm from '../authForm/AuthForm';
 
 
-
-
 function SignIn() {
     const dispatch = useDispatch();
     let navigate = useNavigate();
@@ -18,11 +16,13 @@ function SignIn() {
         
         signInWithEmailAndPassword(auth, email, password)
             .then(({user}) => {
+              console.log(user);  
               localStorage.setItem('accessToken', user.accessToken);
               dispatch(setUser({
                 email: user.email,
                 id: user.uid,
                 token: user.accessToken,
+                userName: user.displayName,
               }))
               navigate("/");
             })
@@ -33,8 +33,9 @@ function SignIn() {
 
   return (
     <AuthForm 
-    title="Sign In"
-    handleClick={handleLogin}/>
+    title="Log In"
+    handleClick={handleLogin}
+    type="login"/>
   )
   
 }

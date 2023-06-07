@@ -4,14 +4,15 @@ import { useDispatch } from 'react-redux';
 import { removeUser } from 'store/slices/userSlice';
 import { useAuth } from 'hooks/use-auth';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-
+import styled from 'styled-components';
 
 import {setUser} from 'store/slices/userSlice'
 
 
 
+
 function HomePage() {
-  const { isAuth, email, token } = useAuth();
+  const { isAuth, email, token, userName } = useAuth();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -25,6 +26,7 @@ function HomePage() {
             email: user.email,
             id: user.uid,
             token: accessToken,
+            userName: user.displayName
           })
         );
       }
@@ -41,7 +43,7 @@ function HomePage() {
       <Link to="/login" onClick={() =>{
         localStorage.removeItem('accessToken');
         dispatch(removeUser())
-      }}>Log Out from {email}</Link>
+      }}>Log Out from {userName}</Link>
     </div>
   ) : (
     <Navigate to="/login" replace={true} />
