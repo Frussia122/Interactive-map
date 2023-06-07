@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 
 export function useAuth() {
     const [token, setToken] = useState(localStorage.getItem('accessToken') || '');
-    const {email, id} = useSelector(state => state.user);
+    const {email, id, userName} = useSelector(state => state.user);
   
     // обновление токена при изменении его значения в localStorage
     useEffect(() => {
@@ -20,5 +20,6 @@ export function useAuth() {
       token,
       email,
       id,
+      userName,
     };
   }

@@ -6,7 +6,7 @@ import { store } from 'store';
 
 
 import './index.css';
-import './firebase';
+import './firebaseConfig';
 import App from './App';
 
 
