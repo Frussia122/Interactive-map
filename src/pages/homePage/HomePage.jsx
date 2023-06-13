@@ -1,10 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Navigate, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { removeUser } from 'store/slices/userSlice';
 import { useAuth } from 'hooks/use-auth';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import styled from 'styled-components';
+
+import Map from 'components/map/Map'
+
+
 
 import {setUser} from 'store/slices/userSlice'
 
@@ -12,7 +15,7 @@ import {setUser} from 'store/slices/userSlice'
 
 
 function HomePage() {
-  const { isAuth, email, token, userName } = useAuth();
+  const { isAuth, token, userName } = useAuth();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -31,22 +34,31 @@ function HomePage() {
         );
       }
     });
-
     return () => unsubscribe();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
-  return isAuth ? (
-    <div>
+
+
+  const map = useMemo(() => {
+      if (isAuth) {
+        return <Map />;
+      } else {
+        return null;
+      }
+  }, [isAuth]);
+
+  return (
+    <>
       <h1>Welcome</h1>
 
-      <Link to="/login" onClick={() =>{
+      {map}
+
+      <Link to="/login" onClick={() => {
         localStorage.removeItem('accessToken');
-        dispatch(removeUser())
+        dispatch(removeUser());
       }}>Log Out from {userName}</Link>
-    </div>
-  ) : (
-    <Navigate to="/login" replace={true} />
+    </>
   );
 }
 
