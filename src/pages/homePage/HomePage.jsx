@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { Navigate, Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { removeUser } from 'store/slices/userSlice';
 import { useAuth } from 'hooks/use-auth';
@@ -17,13 +17,17 @@ import {setUser} from 'store/slices/userSlice'
 function HomePage() {
   const { isAuth, token, userName } = useAuth();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
+   let localAccessToken = localStorage.getItem('accessToken');
+
+   if(localAccessToken) {
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (token) {
         // Автоматическая аутентификация пользователя, если `accessToken` уже есть
-        const accessToken = user.accessToken;
+        const accessToken = user.accessToken
         dispatch(
           setUser({
             email: user.email,
@@ -31,10 +35,14 @@ function HomePage() {
             token: accessToken,
             userName: user.displayName
           })
-        );
+        )
       }
     });
     return () => unsubscribe();
+  
+   } else {
+    navigate('/login')
+   }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 

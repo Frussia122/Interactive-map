@@ -16,9 +16,7 @@ function SignUp() {
   
     const handleRegistration = (email, password, userName) => {
         const auth = getAuth();
-
-
-
+        
         createUserWithEmailAndPassword(auth, email, password)
             .then(({user}) => {
               console.log(user)

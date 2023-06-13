@@ -7,14 +7,13 @@ import styled from 'styled-components';
 
 
 const AuthWraper = styled.ul`
-  
   padding-left: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: 40px auto 0 auto;
   max-width: 350px;
-  
+ 
 `
 const AuthInput = styled.input`
   width:100%;
