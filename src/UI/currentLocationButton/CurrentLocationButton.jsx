@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLocationArrow } from '@fortawesome/free-solid-svg-icons'
 
 const Button = styled.button`
+  z-index: 100;
   position: absolute;
   top: 5px;
   left: 5px;  
