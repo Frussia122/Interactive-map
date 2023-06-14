@@ -17,7 +17,6 @@ function SignIn() {
         signInWithEmailAndPassword(auth, email, password)
             .then(({user}) => {
               localStorage.setItem('accessToken', user.accessToken);
-              if(localStorage.getItem('accessToken'))
               dispatch(setUser({
                 email: user.email,
                 id: user.uid,

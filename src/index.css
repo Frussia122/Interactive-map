@@ -1,5 +1,5 @@
 @import-normalize;
-
+@import '~mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -13,6 +13,16 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-.map-container {
-  height: 400px;
-  }
+
+
+.mapboxgl-ctrl-attrib-inner {
+  display: none;
+}
+
+.marker {
+  background-color: red;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  position: relative;
+}

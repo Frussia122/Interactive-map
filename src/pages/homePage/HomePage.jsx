@@ -43,6 +43,8 @@ function HomePage() {
    } else {
     navigate('/login')
    }
+
+   
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
@@ -58,8 +60,6 @@ function HomePage() {
 
   return (
     <>
-      <h1>Welcome</h1>
-
       {map}
 
       <Link to="/login" onClick={() => {
