@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/modsen/static/css/main.0a807f8d.css",
+    "main.js": "/modsen/static/js/main.99feec9e.js",
+    "static/media/logo.svg": "/modsen/static/media/logo.36346a71bcbce3a4a6149456f0826de0.svg",
+    "index.html": "/modsen/index.html",
+    "main.0a807f8d.css.map": "/modsen/static/css/main.0a807f8d.css.map",
+    "main.99feec9e.js.map": "/modsen/static/js/main.99feec9e.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0a807f8d.css",
+    "static/js/main.99feec9e.js"
+  ]
+}
