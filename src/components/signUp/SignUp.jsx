@@ -16,12 +16,9 @@ function SignUp() {
   
     const handleRegistration = (email, password, userName) => {
         const auth = getAuth();
-
-
-
+        
         createUserWithEmailAndPassword(auth, email, password)
             .then(({user}) => {
-              console.log(user)
               localStorage.setItem('accessToken', user.accessToken);
               dispatch(setUser({
                 email: user.email,
@@ -31,19 +28,12 @@ function SignUp() {
               updateProfile(auth.currentUser, {
                 displayName: userName,
               })
-              .then(() => {
-                navigate("/");
-              })
               .catch((error) => {
                 console.log(error)
               });
-
               navigate("/");
             })
             .catch(console.error);
-            
-
-  
     }
 
   return (

@@ -16,7 +16,6 @@ function SignIn() {
         
         signInWithEmailAndPassword(auth, email, password)
             .then(({user}) => {
-              console.log(user);  
               localStorage.setItem('accessToken', user.accessToken);
               dispatch(setUser({
                 email: user.email,
