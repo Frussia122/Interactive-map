@@ -20,11 +20,27 @@ const Button = styled.button`
   
 `
 
+function CurrentLocationButton({mapRef}) {
 
-function CurrentLocationButton({onFlyToMarker}) {
+  const handleFlyToMarker = () => {
+    if (mapRef.current) {
+      const latitude = localStorage.getItem('currentLatitude');
+      const longitude = localStorage.getItem('currentLongitude');
 
+      const markerLngLat = [longitude, latitude];
+      mapRef.current.flyTo({
+        center: markerLngLat,
+        zoom: 14,
+        speed: 2,
+        curve: 2,
+        easing: t => t,
+        essential: true
+      });
+    }
+
+  };
   return (
-    <Button onClick={() => onFlyToMarker()}>
+    <Button onClick={handleFlyToMarker}>
        <FontAwesomeIcon  icon={faLocationArrow} />
     </Button>
   )
