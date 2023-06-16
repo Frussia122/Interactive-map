@@ -25,17 +25,18 @@ function HomePage() {
    if(localAccessToken) {
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (token) {
-        // Автоматическая аутентификация пользователя, если `accessToken` уже есть
-        const accessToken = user.accessToken
-        dispatch(
-          setUser({
-            email: user.email,
-            id: user.uid,
-            token: accessToken,
-            userName: user.displayName
-          })
-        )
+      if (user && user.accessToken) {
+        const accessToken = user.accessToken;
+          dispatch(
+            setUser({
+              email: user.email,
+              id: user.uid,
+              token: accessToken,
+              userName: user.displayName
+            })
+          )
+      } else {
+        navigate('/login')
       }
     });
     return () => unsubscribe();
