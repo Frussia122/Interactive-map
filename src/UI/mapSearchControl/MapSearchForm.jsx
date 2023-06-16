@@ -1,10 +1,15 @@
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearchLocation } from '@fortawesome/free-solid-svg-icons';
-import getPlaces from 'services/getPlaces';
 import createMarkers from "utils/mapUtils/createMarkers";
 
 import { useState, useEffect } from 'react';
+import MapSearchCategory from './MapSearchCategory';
+
+//UTILS 
+import handleSearchPlaces from 'utils/searchCotrol/handleSearchPlaces';
+
+
 
 const SearchForm = styled.form`
     position: absolute;
@@ -59,28 +64,22 @@ function MapSearchForm({ mapRef }) {
       }
     }, [currentPlaces, mapRef]);
   
-    const handleClick = async (e) => {
-      e.preventDefault();
   
-      if (searchValue) {
-        try {
-          const places = await getPlaces(searchValue, 0.002);
-          setCurrentPlaces(places);
-        } catch (error) {
-          console.error(error);
-        }
-      } else {
-        console.log('No search');
-      }
-    };
   
     return (
-      <SearchForm>
-        <SearchInput placeholder='Поиск мест и адресов' value={searchValue} onChange={(e) => setSearchValue(e.target.value)} />
-        <SearchButton onClick={handleClick}>
-          <FontAwesomeIcon icon={faSearchLocation} />
-        </SearchButton>
-      </SearchForm>
+      <>
+        <SearchForm>
+          <SearchInput placeholder='Поиск мест и адресов' value={searchValue} onChange={(e) => setSearchValue(e.target.value)} />
+          <SearchButton onClick={(e) => handleSearchPlaces(e, searchValue, setCurrentPlaces)}>
+            <FontAwesomeIcon icon={faSearchLocation} />
+          </SearchButton>
+       </SearchForm>
+        <MapSearchCategory 
+        handleSearchPlaces={handleSearchPlaces}
+        setCurrentPlaces={setCurrentPlaces}
+        setSearchValue={setSearchValue}/>
+
+      </>
     );
   }
   
