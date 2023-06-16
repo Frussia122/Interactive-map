@@ -17,7 +17,8 @@ const SearchForm = styled.form`
 `;
 
 const SearchInput = styled.input`
-    height:34px;
+    
+    height:33px;
     outline: none;
     border:none;
     font-size: 15px;
@@ -63,7 +64,7 @@ function MapSearchForm({ mapRef }) {
   
       if (searchValue) {
         try {
-          const places = await getPlaces(searchValue);
+          const places = await getPlaces(searchValue, 0.002);
           setCurrentPlaces(places);
         } catch (error) {
           console.error(error);

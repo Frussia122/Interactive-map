@@ -26,7 +26,7 @@ const createMarkers = (mapRef, currentPlaces) => {
         type: 'symbol',
         source: 'markers',
         layout: {
-            'icon-image': 'marker-15', // Replace with your marker image name
+            'icon-image': 'marker-15', 
             'icon-allow-overlap': true,
             'icon-size': 3
         },

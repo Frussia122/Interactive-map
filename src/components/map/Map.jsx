@@ -1,13 +1,11 @@
-import React, { useEffect, useRef,useState } from "react";
+import React, { useEffect, useRef } from "react";
 import mapboxgl from "mapbox-gl";
 import CurrentLocationButton from "UI/currentLocationButton/CurrentLocationButton";
-import axios from 'axios';
 
 
 //UTILS
 import initializeMap from "utils/mapUtils/initializeMap";
 import getCurrentPosition from "utils/mapUtils/getCurrentPosition";
-// import createGeoCoder from "utils/mapUtils/createGeoCoder";
 import calculateRadius from "utils/mapUtils/calculateRadius";
 import MapSearchForm from "components/mapSearchForm/MapSearchForm";
 

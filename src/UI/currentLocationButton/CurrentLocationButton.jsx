@@ -30,7 +30,7 @@ function CurrentLocationButton({mapRef}) {
       const markerLngLat = [longitude, latitude];
       mapRef.current.flyTo({
         center: markerLngLat,
-        zoom: 14,
+        zoom: 17,
         speed: 2,
         curve: 2,
         easing: t => t,
