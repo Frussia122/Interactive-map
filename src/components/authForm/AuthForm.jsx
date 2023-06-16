@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useState } from 'react';
 import styled from 'styled-components';
 
 
@@ -14,7 +13,7 @@ const AuthWraper = styled.ul`
   margin: 40px auto 0 auto;
   max-width: 350px;
  
-`
+`;
 const AuthInput = styled.input`
   width:100%;
   margin-bottom: 20px;
@@ -29,7 +28,7 @@ const AuthInput = styled.input`
     border: 4px solid #5551ff;
   }
 
-`
+`;
 
 const AuthButton = styled.button`
   border-radius:10px;
@@ -45,69 +44,63 @@ const AuthButton = styled.button`
   &:hover{
     transform: translateY(-5px);
   }
-`
-
-
-
-
-
-
+`;
 
 
 function AuthForm({title, handleClick, type}) {
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [userName, setUserName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [userName, setUserName] = useState('');
    
 
   return (
-    type === "login" ? (
+    type === 'login' ? (
       <AuthWraper>
         <AuthInput 
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)} 
-        placeholder = "Email"/>
-
-        <AuthInput 
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)} 
-        placeholder = "Password"/>
-
-        <AuthButton
-        onClick={() => handleClick(email, password)}>
-            {title}
-        </AuthButton>
-    </AuthWraper>
-    ) : (
-      <AuthWraper>
-          <AuthInput 
-          type="text"
-          value={userName}
-          onChange={(e) => setUserName(e.target.value)} 
-          placeholder = "FirstName"/>
-          
-          <AuthInput 
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)} 
           placeholder = "Email"/>
 
-          <AuthInput 
+        <AuthInput 
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)} 
           placeholder = "Password"/>
 
-          <AuthButton
+        <AuthButton
+          onClick={() => handleClick(email, password)}>
+          {title}
+        </AuthButton>
+      </AuthWraper>
+    ) : (
+      <AuthWraper>
+        <AuthInput 
+          type="text"
+          value={userName}
+          onChange={(e) => setUserName(e.target.value)} 
+          placeholder = "FirstName"/>
+          
+        <AuthInput 
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)} 
+          placeholder = "Email"/>
+
+        <AuthInput 
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)} 
+          placeholder = "Password"/>
+
+        <AuthButton
           onClick={() => handleClick(email, password, userName)}>
-              {title}
-          </AuthButton>
-    </AuthWraper>
+          {title}
+        </AuthButton>
+      </AuthWraper>
     )
-  )
+  );
 }
 
-export default AuthForm
+export default AuthForm;

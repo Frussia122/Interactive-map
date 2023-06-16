@@ -5,11 +5,9 @@ import { removeUser } from 'store/slices/userSlice';
 import { useAuth } from 'hooks/use-auth';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
-import Map from 'components/map/Map'
+import Map from 'components/map/Map';
 
-
-
-import {setUser} from 'store/slices/userSlice'
+import {setUser} from 'store/slices/userSlice';
 
 
 
@@ -20,43 +18,39 @@ function HomePage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-   let localAccessToken = localStorage.getItem('accessToken');
+    const localAccessToken = localStorage.getItem('accessToken');
 
-   if(localAccessToken) {
-    const auth = getAuth();
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user && user.accessToken) {
-        const accessToken = user.accessToken;
+    if(localAccessToken) {
+      const auth = getAuth();
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        if (user && user.accessToken) {
+          const accessToken = user.accessToken;
           dispatch(
             setUser({
               email: user.email,
               id: user.uid,
               token: accessToken,
-              userName: user.displayName
+              userName: user.displayName,
             })
-          )
-      } else {
-        navigate('/login')
-      }
-    });
-    return () => unsubscribe();
+          );
+        } else {
+          navigate('/login');
+        }
+      });
+      return () => unsubscribe();
   
-   } else {
-    navigate('/login')
-   }
-
-   
+    } else {
+      navigate('/login');
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
-
-
   const map = useMemo(() => {
-      if (isAuth) {
-        return <Map />;
-      } else {
-        return null;
-      }
+    if (isAuth) {
+      return <Map />;
+    } else {
+      return null;
+    }
   }, [isAuth]);
 
   return (
