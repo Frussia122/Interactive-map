@@ -1,6 +1,6 @@
-import styled from 'styled-components'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faLocationArrow } from '@fortawesome/free-solid-svg-icons'
+import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLocationArrow } from '@fortawesome/free-solid-svg-icons';
 
 const Button = styled.button`
   z-index: 100;
@@ -18,7 +18,7 @@ const Button = styled.button`
   font-size: 25px;
   cursor: pointer;
   
-`
+`;
 
 function CurrentLocationButton({mapRef}) {
 
@@ -34,16 +34,16 @@ function CurrentLocationButton({mapRef}) {
         speed: 2,
         curve: 2,
         easing: t => t,
-        essential: true
+        essential: true,
       });
     }
 
   };
   return (
     <Button onClick={handleFlyToMarker}>
-       <FontAwesomeIcon  icon={faLocationArrow} />
+      <FontAwesomeIcon  icon={faLocationArrow} />
     </Button>
-  )
+  );
 }
 
-export default CurrentLocationButton
+export default CurrentLocationButton;
