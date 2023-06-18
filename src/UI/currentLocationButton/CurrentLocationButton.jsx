@@ -1,27 +1,10 @@
-import styled from 'styled-components';
+/* eslint-disable react/prop-types */
+import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationArrow } from '@fortawesome/free-solid-svg-icons';
+import Button from './styled';
 
-const Button = styled.button`
-  z-index: 100;
-  position: absolute;
-  top: 5px;
-  left: 5px;  
-  width: 45px;
-  height: 45px;
-  display:flex;
-  justify-content: center;
-  align-items: center;
-  background: white;
-  border: none;
-  border-radius: 50%;
-  font-size: 25px;
-  cursor: pointer;
-  
-`;
-
-function CurrentLocationButton({mapRef}) {
-
+function CurrentLocationButton({ mapRef }) {
   const handleFlyToMarker = () => {
     if (mapRef.current) {
       const latitude = localStorage.getItem('currentLatitude');
@@ -33,15 +16,14 @@ function CurrentLocationButton({mapRef}) {
         zoom: 17,
         speed: 2,
         curve: 2,
-        easing: t => t,
+        easing: (t) => t,
         essential: true,
       });
     }
-
   };
   return (
     <Button onClick={handleFlyToMarker}>
-      <FontAwesomeIcon  icon={faLocationArrow} />
+      <FontAwesomeIcon icon={faLocationArrow} />
     </Button>
   );
 }

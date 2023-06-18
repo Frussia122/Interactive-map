@@ -1,24 +1,20 @@
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setUser } from 'store/slices/userSlice';
-import { getAuth, createUserWithEmailAndPassword, updateProfile} from 'firebase/auth';
-
-
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 
 import React from 'react';
 import AuthForm from '../authForm/AuthForm';
 
-
-
 function SignUp() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
+
   const handleRegistration = (email, password, userName) => {
     const auth = getAuth();
-        
+
     createUserWithEmailAndPassword(auth, email, password)
-      .then(({user}) => {
+      .then(({ user }) => {
         localStorage.setItem('accessToken', user.accessToken);
         dispatch(setUser({
           email: user.email,
@@ -39,12 +35,12 @@ function SignUp() {
   };
 
   return (
-    <AuthForm 
+    <AuthForm
       title="Create Account"
       handleClick={handleRegistration}
-      type="registration"/>
+      type="registration"
+    />
   );
-  
 }
 
 export default SignUp;

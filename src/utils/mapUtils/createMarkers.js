@@ -1,5 +1,3 @@
-
-
 const createMarkers = (mapRef, currentPlaces) => {
   if (currentPlaces) {
     if (mapRef.current.getLayer('markers')) {
@@ -11,7 +9,7 @@ const createMarkers = (mapRef, currentPlaces) => {
     type: 'geojson',
     data: {
       type: 'FeatureCollection',
-      features: currentPlaces.map(place => ({
+      features: currentPlaces.map((place) => ({
         type: 'Feature',
         geometry: {
           type: 'Point',
@@ -26,7 +24,7 @@ const createMarkers = (mapRef, currentPlaces) => {
     type: 'symbol',
     source: 'markers',
     layout: {
-      'icon-image': 'marker-15', 
+      'icon-image': 'marker-15',
       'icon-allow-overlap': true,
       'icon-size': 3,
     },

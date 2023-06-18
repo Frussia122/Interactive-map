@@ -1,11 +1,10 @@
-
-import {useDispatch} from 'react-redux';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-import {setUser} from 'store/slices/userSlice';
+import { setUser } from 'store/slices/userSlice';
 import AuthForm from '../authForm/AuthForm';
-
 
 function SignIn() {
   const dispatch = useDispatch();
@@ -13,9 +12,8 @@ function SignIn() {
 
   const handleLogin = (email, password) => {
     const auth = getAuth();
-        
     signInWithEmailAndPassword(auth, email, password)
-      .then(({user}) => {
+      .then(({ user }) => {
         localStorage.setItem('accessToken', user.accessToken);
         dispatch(setUser({
           email: user.email,
@@ -29,10 +27,11 @@ function SignIn() {
   };
 
   return (
-    <AuthForm 
+    <AuthForm
       title="Log In"
       handleClick={handleLogin}
-      type="login"/>
+      type="login"
+    />
   );
 }
 

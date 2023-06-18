@@ -1,8 +1,5 @@
 import getPlaces from 'services/getPlaces';
 
-
-
-
 const handleSearchPlaces = async (e, searchValue, setCurrentPlaces) => {
   e.preventDefault();
   if (searchValue) {
