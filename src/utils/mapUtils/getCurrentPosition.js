@@ -9,11 +9,9 @@ const getCurrentPosition = (mapRef) => {
       localStorage.setItem('currentLatitude', latitude);
       localStorage.setItem('currentLongitude', longitude);
 
-      mapRef.current.on('load', () => {
-        new mapboxgl.Marker()
-          .setLngLat([longitude, latitude])
-          .addTo(mapRef.current);
-      });
+      new mapboxgl.Marker()
+        .setLngLat([longitude, latitude])
+        .addTo(mapRef.current);
     },
     (error) => {
       throw new Error(error);

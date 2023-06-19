@@ -17,9 +17,9 @@ function Map() {
 
   useEffect(() => {
     mapRef.current = initializeMap('map-container', setMapLoading);
-    getCurrentPosition(mapRef);
 
     mapRef.current.on('load', () => {
+      getCurrentPosition(mapRef);
       setMapLoading(false);
     });
     return () => {
