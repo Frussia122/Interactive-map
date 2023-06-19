@@ -1,36 +1,49 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import CurrentLocationButton from 'UI/currentLocationButton/CurrentLocationButton';
 import MapSearchCotrol from 'UI/mapSearchControl/MapSearchForm';
 
-//UTILS
 import initializeMap from 'utils/mapUtils/initializeMap';
 import getCurrentPosition from 'utils/mapUtils/getCurrentPosition';
+import loadingLogo from './loading.gif';
 
-// TOKEN
-mapboxgl.accessToken = 'pk.eyJ1IjoiYW1pZGdhcmQiLCJhIjoiY2xpdTU2YTl6MHY3ZjNubzdtN2szcHA4bSJ9.NSfezHJZVWpHKWKob-s4xg';
+mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_API;
 
-
-const Map = () => {
-  const mapContainerRef = useRef(null);
+// eslint-disable-next-line react/prop-types
+function Map() {
   const mapRef = useRef(null);
-  
+  // eslint-disable-next-line no-unused-vars
+  const [mapLoading, setMapLoading] = useState(true);
+
   useEffect(() => {
-    mapRef.current = initializeMap(mapContainerRef);
+    mapRef.current = initializeMap('map-container', setMapLoading);
     getCurrentPosition(mapRef);
-    
+
+    mapRef.current.on('load', () => {
+      setMapLoading(false);
+    });
     return () => {
       mapRef.current.remove();
     };
   }, []);
-  
 
   return (
-    <div ref={mapContainerRef} style={{ width: '100%', height: '100vh' }}>
+    <div id="map-container" style={{ width: '100%', height: '100vh' }}>
       <CurrentLocationButton mapRef={mapRef} />
-      <MapSearchCotrol mapRef={mapRef}/>
+      <MapSearchCotrol mapRef={mapRef} />
+
+      {mapLoading ? (
+        <div className="loader">
+          <img src={loadingLogo} alt="" />
+        </div>
+      ) : (
+        <div className="loader hide">
+          <img src={loadingLogo} alt="" />
+        </div>
+      )}
+
     </div>
   );
-};
+}
 
 export default Map;

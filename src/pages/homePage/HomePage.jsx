@@ -1,16 +1,11 @@
 import React, { useEffect, useMemo } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { removeUser } from 'store/slices/userSlice';
-import { useAuth } from 'hooks/use-auth';
+import { removeUser, setUser } from 'store/slices/userSlice';
+import useAuth from 'hooks/use-auth';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 import Map from 'components/map/Map';
-
-import {setUser} from 'store/slices/userSlice';
-
-
-
 
 function HomePage() {
   const { isAuth, token, userName } = useAuth();
@@ -20,25 +15,24 @@ function HomePage() {
   useEffect(() => {
     const localAccessToken = localStorage.getItem('accessToken');
 
-    if(localAccessToken) {
+    if (localAccessToken) {
       const auth = getAuth();
       const unsubscribe = onAuthStateChanged(auth, (user) => {
         if (user && user.accessToken) {
-          const accessToken = user.accessToken;
+          const { accessToken } = user;
           dispatch(
             setUser({
               email: user.email,
               id: user.uid,
               token: accessToken,
               userName: user.displayName,
-            })
+            }),
           );
         } else {
           navigate('/login');
         }
       });
-      return () => unsubscribe();
-  
+      unsubscribe();
     } else {
       navigate('/login');
     }
@@ -48,19 +42,23 @@ function HomePage() {
   const map = useMemo(() => {
     if (isAuth) {
       return <Map />;
-    } else {
-      return null;
-    }
+    } return null;
   }, [isAuth]);
 
   return (
     <>
       {map}
 
-      <Link to="/login" onClick={() => {
-        localStorage.removeItem('accessToken');
-        dispatch(removeUser());
-      }}>Log Out from {userName}</Link>
+      <Link
+        to="/login"
+        onClick={() => {
+          localStorage.removeItem('accessToken');
+          dispatch(removeUser());
+        }}
+      >
+        Log Out from
+        {userName}
+      </Link>
     </>
   );
 }
