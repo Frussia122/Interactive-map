@@ -5,7 +5,7 @@ import { removeUser, setUser } from 'store/slices/userSlice';
 import useAuth from 'hooks/use-auth';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
-import Map from 'components/map/Map';
+import MapY from 'components/map/Map';
 
 function HomePage() {
   const { isAuth, token, userName } = useAuth();
@@ -36,19 +36,17 @@ function HomePage() {
     } else {
       navigate('/login');
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
   const map = useMemo(() => {
     if (isAuth) {
-      return <Map />;
+      return <MapY />;
     } return null;
   }, [isAuth]);
 
   return (
     <>
       {map}
-
       <Link
         to="/login"
         onClick={() => {
