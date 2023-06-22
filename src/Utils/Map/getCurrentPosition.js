@@ -1,22 +1,15 @@
-import mapboxgl from 'mapbox-gl';
-
-const getCurrentPosition = (mapRef) => {
+const getCurrentPosition = () => new Promise((resolve, reject) => {
   navigator.geolocation.getCurrentPosition(
     (position) => {
       const { latitude, longitude } = position.coords;
-      mapRef.current.setCenter([longitude, latitude]);
-
       localStorage.setItem('currentLatitude', latitude);
       localStorage.setItem('currentLongitude', longitude);
-
-      new mapboxgl.Marker()
-        .setLngLat([longitude, latitude])
-        .addTo(mapRef.current);
+      resolve({ latitude, longitude });
     },
     (error) => {
-      throw new Error(error);
+      reject(new Error(error));
     },
   );
-};
+});
 
 export default getCurrentPosition;

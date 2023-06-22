@@ -1,49 +1,53 @@
-import React, { useEffect, useRef, useState } from 'react';
-import mapboxgl from 'mapbox-gl';
-import CurrentLocationButton from 'UI/currentLocationButton/CurrentLocationButton';
-import MapSearchCotrol from 'UI/mapSearchControl/MapSearchForm';
+import React, { useEffect, useRef } from 'react';
+import initializeMap from 'Utils/Map/initializeMap';
+import getCurrentPosition from 'Utils/Map/getCurrentPosition';
+import createMarker from 'Utils/Map/createMarker';
+import SearchControl from 'UI/serachControl/SearchControl';
+import MapCategory from 'UI/MapCategory/MapCategory';
+import styled from 'styled-components';
+import CurrentLocationControl from 'UI/currentLocationControl/CurrentLocationControl';
 
-import initializeMap from 'utils/mapUtils/initializeMap';
-import getCurrentPosition from 'utils/mapUtils/getCurrentPosition';
-import loadingLogo from './loading.gif';
+const Wrapper = styled.div`
+  background: white;
+  height: 100vh;
+  width: 350px;
+  z-index: 1005;
+  top: 0;
+  left: 0;
+  position: absolute;
+`;
 
-mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_API;
-
-// eslint-disable-next-line react/prop-types
-function Map() {
+function MapY() {
+  const { ymaps } = window;
   const mapRef = useRef(null);
-  // eslint-disable-next-line no-unused-vars
-  const [mapLoading, setMapLoading] = useState(true);
 
   useEffect(() => {
-    mapRef.current = initializeMap('map-container', setMapLoading);
-
-    mapRef.current.on('load', () => {
-      getCurrentPosition(mapRef);
-      setMapLoading(false);
-    });
-    return () => {
-      mapRef.current.remove();
-    };
-  }, []);
+    if (ymaps) {
+      ymaps.ready(() => {
+        getCurrentPosition()
+          .then(({ latitude, longitude }) => {
+            mapRef.current = initializeMap(ymaps, latitude, longitude);
+            createMarker(ymaps, mapRef, latitude, longitude);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      });
+    }
+  }, [ymaps]);
 
   return (
-    <div id="map-container" style={{ width: '100%', height: '100vh' }}>
-      <CurrentLocationButton mapRef={mapRef} />
-      <MapSearchCotrol mapRef={mapRef} />
-
-      {mapLoading ? (
-        <div className="loader">
-          <img src={loadingLogo} alt="" />
-        </div>
-      ) : (
-        <div className="loader hide">
-          <img src={loadingLogo} alt="" />
-        </div>
-      )}
-
+    <div
+      id="map"
+      ref={mapRef}
+    >
+      <SearchControl mapRef={mapRef} />
+      <Wrapper>
+        <MapCategory mapRef={mapRef} />
+      </Wrapper>
+      <CurrentLocationControl mapRef={mapRef} />
     </div>
   );
 }
 
-export default Map;
+export default MapY;

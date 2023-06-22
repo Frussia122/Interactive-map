@@ -51,5 +51,4 @@ const categories = [
     color: 'rgb(105, 191, 170)',
   },
 ];
-
 export default categories;
