@@ -30,6 +30,7 @@ const Form = styled.form`
 const Input = styled.input`
   padding: 15px 20px;
   width: 200px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
   border: none;
@@ -42,6 +43,7 @@ const Button = styled.button`
   height: 48px;
   width: 48px;
   margin: 0;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
   border: none;
@@ -76,21 +78,11 @@ function SearchControl({ mapRef }) {
           setInputValue(selectedValue);
         });
         return () => {
-          suggestView.destroy(); // Очистка ресурсов при размонтировании компонента
+          suggestView.destroy();
         };
       });
     }
   }, []);
-
-  const handleInputFocus = () => {
-    const form = document.getElementById('form');
-    form.classList.add('focused');
-  };
-
-  const handleInputBlur = () => {
-    const form = document.getElementById('form');
-    form.classList.remove('focused');
-  };
 
   return (
     <Wrapper>
@@ -100,8 +92,6 @@ function SearchControl({ mapRef }) {
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           id="suggest"
-          onFocus={handleInputFocus}
-          onBlur={handleInputBlur}
         />
         <Button type="button" onClick={handleSearch}>
           <FontAwesomeIcon icon={faSearchLocation} />
