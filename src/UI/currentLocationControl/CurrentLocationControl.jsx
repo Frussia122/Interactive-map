@@ -36,7 +36,7 @@ function CurrentLocationControl({ mapRef }) {
     if (latitude) {
       mapRef.current.panTo([latitude, longitude], {
         flying: true,
-        duration: 1000,
+        duration: 500,
       });
     }
   };

@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import searchProvider from 'Utils/Map/searchProvider';
+import { addSuggetstView, suggestEvent } from 'Utils/Map/addSuggestView';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearchLocation } from '@fortawesome/free-solid-svg-icons';
@@ -30,6 +31,7 @@ const Form = styled.form`
 const Input = styled.input`
   padding: 15px 20px;
   width: 200px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
   border: none;
@@ -42,22 +44,21 @@ const Button = styled.button`
   height: 48px;
   width: 48px;
   margin: 0;
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
   border: none;
   background-color: #f6f6f6;
   font-size: 20px;
   cursor: pointer;
   color: black;
   transition: all .2s linear;
-
+  border-left: 1px solid #c9c9c9;
+  border-right: 1px solid #c9c9c9;
   &:hover{
     color: red;
   }
 `;
 
-function SearchControl({ mapRef }) {
-  const [inputValue, setInputValue] = useState('');
+function SearchControl({ mapRef, inputValue, setInputValue }) {
+  const [currentSuggest, setCurrentSuggest] = useState('');
 
   const { ymaps } = window;
 
@@ -69,27 +70,14 @@ function SearchControl({ mapRef }) {
   useEffect(() => {
     if (ymaps) {
       ymaps.ready(() => {
-        const suggestView = new ymaps.SuggestView('suggest', { provider: 'yandex#search' });
-        suggestView.events.add('select', (e) => {
-          const selectedItem = e.get('item');
-          const selectedValue = selectedItem.value;
-          setInputValue(selectedValue);
-        });
-        return () => {
-          suggestView.destroy(); // Очистка ресурсов при размонтировании компонента
-        };
+        setCurrentSuggest(addSuggetstView('suggest', 'yandex#search'));
       });
     }
   }, []);
 
-  const handleInputFocus = () => {
-    const form = document.getElementById('form');
-    form.classList.add('focused');
-  };
-
-  const handleInputBlur = () => {
-    const form = document.getElementById('form');
-    form.classList.remove('focused');
+  const handleChange = (e) => {
+    setInputValue(e.target.value);
+    suggestEvent(currentSuggest, setInputValue);
   };
 
   return (
@@ -98,10 +86,8 @@ function SearchControl({ mapRef }) {
         <Input
           placeholder="Поиск мест и адресов"
           value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
+          onChange={(e) => handleChange(e)}
           id="suggest"
-          onFocus={handleInputFocus}
-          onBlur={handleInputBlur}
         />
         <Button type="button" onClick={handleSearch}>
           <FontAwesomeIcon icon={faSearchLocation} />
