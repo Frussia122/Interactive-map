@@ -72,3 +72,11 @@ code {
   border: none !important;
   
 }
+.active{
+  color: #196dff !important;
+}
+.activeType{
+  border: 1px solid #196dff !important;
+  border-radius: 50%;
+
+}

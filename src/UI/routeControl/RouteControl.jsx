@@ -1,28 +1,26 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
 import { addSuggetstView, suggestEvent } from 'Utils/Map/addSuggestView';
 import addMultiRoute from 'Utils/Map/addMultiRoute';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import routeTypes from './routeTypes';
+import {
+  Wrapper,
+  TypeButton,
+  Input,
+  Button,
+  TypesWrapper,
+  InputWrapper,
+} from './styled';
 
-const Wrapper = styled.div`
-margin-top: 100px;
-`;
-
-const Input = styled.input`
-`;
-const Button = styled.button`
-`;
-
-const TypeButton = styled.button`
-
-`;
 function RouteControl({ mapRef }) {
   const [routeFrom, setRouteFrom] = useState('');
   const [routeTo, setRouteTo] = useState('');
   const [routeFromSuggest, setRouteFromSuggest] = useState('');
   const [routeToSuggest, setRouteToSuggest] = useState('');
   const [multiRoute, setMultiRoute] = useState();
+  const [activeType, setActiveType] = useState(routeTypes[0].type);
 
   const { ymaps } = window;
 
@@ -51,33 +49,46 @@ function RouteControl({ mapRef }) {
     setRouteTo('');
     setMultiRoute(newMultiRoute);
   };
-  const handleChangeType = (type) => {
+  const handleType = (type) => {
     if (multiRoute) {
+      setActiveType(type);
       multiRoute.model.setParams({
         routingMode: type,
       });
     }
   };
+
   return (
     <Wrapper>
-      <TypeButton onClick={() => handleChangeType('auto')}>Car</TypeButton>
-      <TypeButton onClick={() => handleChangeType('pedestrian')}>Walking</TypeButton>
-      <TypeButton onClick={() => handleChangeType('masstransit')}>Общественный транспорт</TypeButton>
-      <TypeButton onClick={() => handleChangeType('bicycle')}>Велик</TypeButton>
-      <Input
-        value={routeFrom}
-        onChange={(e) => handleRouteChange(e, 'from')}
-        id="routeFrom"
-        placeholder="От куда?"
-      />
-      <Input
-        value={routeTo}
-        onChange={(e) => handleRouteChange(e, 'to')}
-        id="routeTo"
-        placeholder="Куда?"
-
-      />
-      <Button onClick={handleRouteClick}> as</Button>
+      <TypesWrapper>
+        {routeTypes.map((type) => (
+          <TypeButton
+            key={type.id}
+            onClick={(e) => handleType(type.type, e)}
+            className={type.type === activeType ? 'activeType' : ''}
+          >
+            <FontAwesomeIcon
+              icon={type.icon}
+              className={type.type === activeType ? 'active' : ''}
+            />
+          </TypeButton>
+        ))}
+      </TypesWrapper>
+      <InputWrapper>
+        <Input
+          value={routeFrom}
+          onChange={(e) => handleRouteChange(e, 'from')}
+          id="routeFrom"
+          placeholder="От куда?"
+        />
+        <Input
+          value={routeTo}
+          onChange={(e) => handleRouteChange(e, 'to')}
+          id="routeTo"
+          placeholder="Куда?"
+        />
+      </InputWrapper>
+      <Button onClick={handleRouteClick}>Проложить маршрут</Button>
     </Wrapper>
   );
 }
