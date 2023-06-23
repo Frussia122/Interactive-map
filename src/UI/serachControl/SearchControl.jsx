@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import searchProvider from 'Utils/Map/searchProvider';
+import { addSuggetstView, suggestEvent } from 'Utils/Map/addSuggestView';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearchLocation } from '@fortawesome/free-solid-svg-icons';
@@ -60,6 +61,7 @@ const Button = styled.button`
 
 function SearchControl({ mapRef }) {
   const [inputValue, setInputValue] = useState('');
+  const [currentSuggest, setCurrentSuggest] = useState('');
 
   const { ymaps } = window;
 
@@ -71,18 +73,15 @@ function SearchControl({ mapRef }) {
   useEffect(() => {
     if (ymaps) {
       ymaps.ready(() => {
-        const suggestView = new ymaps.SuggestView('suggest', { provider: 'yandex#search' });
-        suggestView.events.add('select', (e) => {
-          const selectedItem = e.get('item');
-          const selectedValue = selectedItem.value;
-          setInputValue(selectedValue);
-        });
-        return () => {
-          suggestView.destroy();
-        };
+        setCurrentSuggest(addSuggetstView('suggest', 'yandex#search'));
       });
     }
   }, []);
+
+  const handleChange = (e) => {
+    setInputValue(e.target.value);
+    suggestEvent(currentSuggest, setInputValue);
+  };
 
   return (
     <Wrapper>
@@ -90,7 +89,7 @@ function SearchControl({ mapRef }) {
         <Input
           placeholder="Поиск мест и адресов"
           value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
+          onChange={(e) => handleChange(e)}
           id="suggest"
         />
         <Button type="button" onClick={handleSearch}>

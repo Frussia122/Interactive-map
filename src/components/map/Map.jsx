@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import CurrentLocationControl from 'UI/currentLocationControl/CurrentLocationControl';
 import { faArrowPointer } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import RouteControl from 'UI/routeControl/RouteControl';
 
 const Wrapper = styled.div`
   background: white;
@@ -43,7 +44,7 @@ const Button = styled.button`
   }
 `;
 function MapY() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const { ymaps } = window;
   const mapRef = useRef(null);
 
@@ -83,8 +84,9 @@ function MapY() {
           icon={faArrowPointer}
         />
       </Button>
-      <Wrapper onClick={handleHide} style={isOpen ? { left: '0' } : { left: '-100%' }}>
+      <Wrapper style={isOpen ? { left: '0' } : { left: '-100%' }}>
         <MapCategory mapRef={mapRef} />
+        <RouteControl mapRef={mapRef} />
       </Wrapper>
       <CurrentLocationControl mapRef={mapRef} />
     </div>
