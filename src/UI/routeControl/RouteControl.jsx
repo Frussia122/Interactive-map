@@ -3,8 +3,10 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { addSuggetstView, suggestEvent } from 'Utils/Map/addSuggestView';
+import addMultiRoute from 'Utils/Map/addMultiRoute';
 
 const Wrapper = styled.div`
+margin-top: 100px;
 `;
 
 const Input = styled.input`
@@ -12,7 +14,7 @@ const Input = styled.input`
 const Button = styled.button`
 `;
 
-const Car = styled.button`
+const TypeButton = styled.button`
 
 `;
 function RouteControl({ mapRef }) {
@@ -33,50 +35,44 @@ function RouteControl({ mapRef }) {
     }
   }, []);
 
-  const handleRouteFromChange = (e) => {
-    setRouteFrom(e.target.value);
-    suggestEvent(routeFromSuggest, setRouteFrom);
-  };
-
-  const handleRouteToChange = (e) => {
-    setRouteTo(e.target.value);
-    suggestEvent(routeToSuggest, setRouteTo);
+  const handleRouteChange = (e, type) => {
+    if (type === 'from') {
+      setRouteFrom(e.target.value);
+      suggestEvent(routeFromSuggest, setRouteFrom);
+    } else if (type === 'to') {
+      setRouteTo(e.target.value);
+      suggestEvent(routeToSuggest, setRouteTo);
+    }
   };
 
   const handleRouteClick = () => {
-    const newMultiRoute = new ymaps.multiRouter.MultiRoute({
-      referencePoints: [
-        routeFrom,
-        routeTo,
-      ],
-      params: {
-        routingMode: 'masstransit',
-      },
-    }, {
-      boundsAutoApply: true,
-    });
-    mapRef.current.geoObjects.add(newMultiRoute);
+    const newMultiRoute = addMultiRoute(mapRef, routeFrom, routeTo);
     setRouteFrom('');
     setRouteTo('');
     setMultiRoute(newMultiRoute);
   };
   const handleChangeType = (type) => {
-    multiRoute.model.setParams({
-      routingMode: type,
-    });
+    if (multiRoute) {
+      multiRoute.model.setParams({
+        routingMode: type,
+      });
+    }
   };
   return (
     <Wrapper>
-      <Car onClick={() => handleChangeType('auto')}>Car</Car>
+      <TypeButton onClick={() => handleChangeType('auto')}>Car</TypeButton>
+      <TypeButton onClick={() => handleChangeType('pedestrian')}>Walking</TypeButton>
+      <TypeButton onClick={() => handleChangeType('masstransit')}>Общественный транспорт</TypeButton>
+      <TypeButton onClick={() => handleChangeType('bicycle')}>Велик</TypeButton>
       <Input
         value={routeFrom}
-        onChange={(e) => handleRouteFromChange(e)}
+        onChange={(e) => handleRouteChange(e, 'from')}
         id="routeFrom"
         placeholder="От куда?"
       />
       <Input
         value={routeTo}
-        onChange={(e) => handleRouteToChange(e)}
+        onChange={(e) => handleRouteChange(e, 'to')}
         id="routeTo"
         placeholder="Куда?"
 

@@ -44,23 +44,20 @@ const Button = styled.button`
   height: 48px;
   width: 48px;
   margin: 0;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
   border: none;
   background-color: #f6f6f6;
   font-size: 20px;
   cursor: pointer;
   color: black;
   transition: all .2s linear;
-
+  border-left: 1px solid #c9c9c9;
+  border-right: 1px solid #c9c9c9;
   &:hover{
     color: red;
   }
 `;
 
-function SearchControl({ mapRef }) {
-  const [inputValue, setInputValue] = useState('');
+function SearchControl({ mapRef, inputValue, setInputValue }) {
   const [currentSuggest, setCurrentSuggest] = useState('');
 
   const { ymaps } = window;

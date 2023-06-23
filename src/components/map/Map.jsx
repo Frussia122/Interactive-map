@@ -6,14 +6,14 @@ import SearchControl from 'UI/serachControl/SearchControl';
 import MapCategory from 'UI/MapCategory/MapCategory';
 import styled from 'styled-components';
 import CurrentLocationControl from 'UI/currentLocationControl/CurrentLocationControl';
-import { faArrowPointer } from '@fortawesome/free-solid-svg-icons';
+import { faArrowPointer, faClose, faRoute } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import RouteControl from 'UI/routeControl/RouteControl';
 
 const Wrapper = styled.div`
   background: white;
   height: 100vh;
-  width: 350px;
+  width: 400px;
   z-index: 1005;
   top: 0;
   left: 0;
@@ -30,11 +30,10 @@ const Button = styled.button`
   align-items: center;
   justify-content: center;
   border: none;
-  color: white;
   color: #A5A5A5;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   background-color: #4d4d4d;
-  left: 317px;
+  left: 367px;
   cursor: pointer;
   top: 30px;
   transition: all 0.1s linear;
@@ -43,8 +42,29 @@ const Button = styled.button`
     color: white;
   }
 `;
+
+const RouteButton = styled.button`
+    position: absolute;
+    height: 48px;
+    z-index: 1010;
+    left: 309px;
+    top: 21.5px;
+    width: 48px;
+    margin: 0;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border: none;
+    background-color: #f6f6f6;
+    font-size: 20px;
+    cursor: pointer;
+    color: black;
+    transition: all .2s linear;
+`;
 function MapY() {
   const [isOpen, setIsOpen] = useState(true);
+  const [routePanel, setRoutePanel] = useState(false);
+  const [inputValue, setInputValue] = useState('');
   const { ymaps } = window;
   const mapRef = useRef(null);
 
@@ -66,13 +86,24 @@ function MapY() {
   const handleHide = () => {
     setIsOpen(!isOpen);
   };
+  const handleRoutePanel = () => {
+    if (inputValue) {
+      setInputValue('');
+    } else {
+      setIsOpen(true);
+      setRoutePanel(!routePanel);
+    }
+  };
 
   return (
     <div
       id="map"
       ref={mapRef}
     >
-      <SearchControl mapRef={mapRef} />
+      <SearchControl mapRef={mapRef} inputValue={inputValue} setInputValue={setInputValue} />
+      <RouteButton onClick={handleRoutePanel}>
+        <FontAwesomeIcon icon={routePanel || inputValue ? faClose : faRoute} />
+      </RouteButton>
       <Button onClick={handleHide}>
         <FontAwesomeIcon
           style={isOpen ? {
@@ -85,8 +116,9 @@ function MapY() {
         />
       </Button>
       <Wrapper style={isOpen ? { left: '0' } : { left: '-100%' }}>
-        <MapCategory mapRef={mapRef} />
-        <RouteControl mapRef={mapRef} />
+        {routePanel
+          ? <RouteControl mapRef={mapRef} />
+          : <MapCategory mapRef={mapRef} />}
       </Wrapper>
       <CurrentLocationControl mapRef={mapRef} />
     </div>
