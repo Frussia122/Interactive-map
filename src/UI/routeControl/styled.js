@@ -22,14 +22,14 @@ outline: 1 solid transparent;
 export const Button = styled.button`
 padding: 20px;
 border-radius: 15px;
-border: 1px solid #c9c9c9;
+border: none;
 font-size: 15px;
 cursor: pointer;
 transition: all .2s linear;
+color: gray;
 &:hover{
     background-color: red;
     color: white;
-    transition: color .2s linear;
 }
 `;
 

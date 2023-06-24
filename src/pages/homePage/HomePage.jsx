@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { removeUser, setUser } from 'store/slices/userSlice';
@@ -8,7 +8,8 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import MapY from 'components/map/Map';
 
 function HomePage() {
-  const { isAuth, token, userName } = useAuth();
+  const [isOpen, setIsOpen] = useState(true);
+  const { token, userName } = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -38,23 +39,20 @@ function HomePage() {
     }
   }, [token]);
 
-  const map = useMemo(() => {
-    if (isAuth) {
-      return <MapY />;
-    } return null;
-  }, [isAuth]);
-
   return (
     <>
-      {map}
+      <MapY isOpen={isOpen} setIsOpen={setIsOpen} />
       <Link
+        className="logOut"
+        style={isOpen
+          ? { left: '80px' } : { left: '-100%' }}
         to="/login"
         onClick={() => {
           localStorage.removeItem('accessToken');
           dispatch(removeUser());
         }}
       >
-        Log Out from
+        Log Out from&nbsp;
         {userName}
       </Link>
     </>

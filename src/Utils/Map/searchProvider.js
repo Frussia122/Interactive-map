@@ -1,7 +1,7 @@
 import getPlaces from 'services/getPlaces';
 
 const { ymaps } = window;
-const searchProvider = async (mapRef, inputValue) => {
+const searchProvider = async (mapRef, inputValue, setCurrentPlaces, setPlacesPanel) => {
   const res = await getPlaces(inputValue, 0.2);
 
   const markersToRemove = [];
@@ -31,6 +31,8 @@ const searchProvider = async (mapRef, inputValue) => {
       });
       mapRef.current.geoObjects.add(placemark);
     });
+    setCurrentPlaces(res);
+    setPlacesPanel(true);
   }
 };
 

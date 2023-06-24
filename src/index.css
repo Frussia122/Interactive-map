@@ -80,3 +80,23 @@ code {
   border-radius: 50%;
 
 }
+.logOut{
+  position: absolute;
+  z-index: 1011;
+  bottom: 20px;
+  left: 100px;
+  background-color: white;
+  color: black;
+  text-decoration: none;
+  padding:10px 20px;
+  border-radius: 10px;
+  transition: all .2s linear;
+  border:1px solid #c9c9c9;
+}
+.logOut:hover{
+  background-color: red;
+  color: white;
+}
+.ymaps-2-1-79-gotoymaps, .ymaps-2-1-79-map-copyrights-promo{
+  display: none !important;
+}
