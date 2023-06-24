@@ -57,13 +57,20 @@ const Button = styled.button`
   }
 `;
 
-function SearchControl({ mapRef, inputValue, setInputValue }) {
+function SearchControl({
+  mapRef,
+  inputValue,
+  setInputValue,
+  setCurrentPlaces,
+  setPlacesPanel,
+  currentPlaces,
+}) {
   const [currentSuggest, setCurrentSuggest] = useState('');
 
   const { ymaps } = window;
 
   const handleSearch = () => {
-    searchProvider(mapRef, inputValue);
+    searchProvider(mapRef, inputValue, setCurrentPlaces, setPlacesPanel);
     setInputValue('');
   };
 
