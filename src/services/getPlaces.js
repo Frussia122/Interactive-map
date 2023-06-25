@@ -9,7 +9,7 @@ const getPlaces = async (query, radius) => {
     const response = await axios.get(
       `https://search-maps.yandex.ru/v1/?apikey=${API_KEY}&text=${encodeURIComponent(
         query,
-      )}&lang=ru_RU&results=20&ll=${longitude},${latitude}&spn=${radius},${radius}&rspn=1`,
+      )}&lang=ru_RU&results=100&ll=${longitude},${latitude}&spn=${radius},${radius}&rspn=1`,
     );
     return response.data.features;
   } catch (error) {

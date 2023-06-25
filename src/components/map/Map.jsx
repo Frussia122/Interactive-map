@@ -45,7 +45,7 @@ function MapY({ isOpen, setIsOpen }) {
             createMarker(ymaps, mapRef, latitude, longitude);
           })
           .catch((error) => {
-            console.log(error);
+            throw new Error(error);
           });
       });
     }

@@ -1,12 +1,13 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import styled from 'styled-components';
 import searchProvider from 'Utils/Map/searchProvider';
 import { addSuggetstView, suggestEvent } from 'Utils/Map/addSuggestView';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearchLocation } from '@fortawesome/free-solid-svg-icons';
+import { MapYContext } from 'components/map/MapContext';
 
 const Wrapper = styled.div`
   position: absolute;
@@ -57,14 +58,14 @@ const Button = styled.button`
   }
 `;
 
-function SearchControl({
-  mapRef,
-  inputValue,
-  setInputValue,
-  setCurrentPlaces,
-  setPlacesPanel,
-  currentPlaces,
-}) {
+function SearchControl({ mapRef }) {
+  const {
+    inputValue,
+    setInputValue,
+    setPlacesPanel,
+    setCurrentPlaces,
+  } = useContext(MapYContext);
+
   const [currentSuggest, setCurrentSuggest] = useState('');
 
   const { ymaps } = window;
