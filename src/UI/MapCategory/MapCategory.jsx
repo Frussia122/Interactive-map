@@ -32,9 +32,9 @@ export const CategorieItem = styled.li`
     }
 `;
 
-function MapCategory({ mapRef }) {
+function MapCategory({ mapRef, setCurrentPlaces, setPlacesPanel }) {
   const handleChoosenPlaces = (query) => {
-    searchProvider(mapRef, query);
+    searchProvider(mapRef, query, setCurrentPlaces, setPlacesPanel);
   };
   return (
     <CategoriesWrapper>

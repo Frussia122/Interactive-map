@@ -1,25 +1,38 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  useEffect,
+  useRef,
+  useContext,
+  useState,
+} from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowPointer, faClose, faRoute } from '@fortawesome/free-solid-svg-icons';
+
 import initializeMap from 'Utils/Map/initializeMap';
 import getCurrentPosition from 'Utils/Map/getCurrentPosition';
 import createMarker from 'Utils/Map/createMarker';
 import SearchControl from 'UI/serachControl/SearchControl';
-import MapCategory from 'UI/MapCategory/MapCategory';
 import CurrentLocationControl from 'UI/currentLocationControl/CurrentLocationControl';
-import { faArrowPointer, faClose, faRoute } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import RouteControl from 'UI/routeControl/RouteControl';
-import CurrentPlaces from 'components/CurrentPlaces/CurrentPlaces';
+import Controls from 'components/Controls/Controls';
+import { MapYContext } from './MapContext';
 
-import { RouteButton, Button, Wrapper } from './styled';
+import { RouteButton, Button } from './styled';
 
 function MapY({ isOpen, setIsOpen }) {
-  const [placesPanel, setPlacesPanel] = useState(false);
-  const [currentPlaces, setCurrentPlaces] = useState([]);
-  const [routePanel, setRoutePanel] = useState(false);
-  const [inputValue, setInputValue] = useState('');
-  const [isClose, setIsClose] = useState(false);
+  const {
+    placesPanel,
+    setPlacesPanel,
+    currentPlaces,
+    setCurrentPlaces,
+    routePanel,
+    setRoutePanel,
+    inputValue,
+    setInputValue,
+    isClose,
+    setIsClose,
+  } = useContext(MapYContext);
+
   const { ymaps } = window;
   const mapRef = useRef(null);
 
@@ -41,10 +54,11 @@ function MapY({ isOpen, setIsOpen }) {
   const handleHide = () => {
     setIsOpen(!isOpen);
   };
+
   const handleRoutePanel = () => {
     if (inputValue) {
       setInputValue('');
-    } if (placesPanel) {
+    } else if (placesPanel) {
       setIsClose(!isClose);
       setRoutePanel(false);
       setPlacesPanel(false);
@@ -81,13 +95,9 @@ function MapY({ isOpen, setIsOpen }) {
           icon={faArrowPointer}
         />
       </Button>
-      <Wrapper style={isOpen ? { left: '0' } : { left: '-100%' }}>
-        {routePanel && <RouteControl mapRef={mapRef} />}
-        {!routePanel && placesPanel
-      && <CurrentPlaces currentPlaces={currentPlaces} setIsClose={setIsClose} isClose={isClose} />}
-        {!routePanel && !placesPanel && <MapCategory mapRef={mapRef} />}
-      </Wrapper>
+      <Controls mapRef={mapRef} isOpen={isOpen} />
       <CurrentLocationControl mapRef={mapRef} />
+
     </div>
   );
 }
