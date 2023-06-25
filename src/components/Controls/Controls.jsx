@@ -32,7 +32,8 @@ function Controls({ mapRef, isOpen }) {
     <Wrapper style={isOpen ? { left: '0' } : { left: '-100%' }}>
       {routePanel && <RouteControl mapRef={mapRef} />}
       {!routePanel && placesPanel && (
-        <CurrentPlaces currentPlaces={currentPlaces} setIsClose={setIsClose} isClose={isClose} />
+      // eslint-disable-next-line max-len
+        <CurrentPlaces mapRef={mapRef} currentPlaces={currentPlaces} setIsClose={setIsClose} isClose={isClose} />
       )}
       {!routePanel && !placesPanel && (
         // eslint-disable-next-line max-len

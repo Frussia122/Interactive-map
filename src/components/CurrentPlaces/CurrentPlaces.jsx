@@ -1,69 +1,40 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
+import {
+  Wrapper,
+  PlaceItem,
+  Title,
+  Street,
+  PlaceLink,
+  HoursInfo,
+} from './styled';
 
-const Wrapper = styled.ul`
-margin-top: 80px;
-padding: 0;
-margin-left: 20px;
-overflow-y:scroll;
-margin-bottom: 50px;
-height:600px;
-`;
-const PlaceItem = styled.li`
-list-style: none;
-padding: 10px 0;
-border-bottom: 1px solid gray;
-display: flex;
-flex-direction: column;
-`;
-const Title = styled.h4`
-    font-weight: semi-bold;
-    margin:0;
-    font-size: 20px;
-`;
-const Street = styled.span`
-font-size: 12px;
-margin: 5px 0;
-color: gray;
-`;
-
-const PlaceUrl = styled.a`
-    margin: 5px 0;
-    color: blue;
-    &:hover{
-        text-decoration: underline;
-    }
-    cursor: pointer;
-`;
-
-const Hours = styled.div`
-    margin-top: 5px;
-    font-size:12px;
-`;
-function CurrentPlaces({ currentPlaces, setIsClose, IsClose }) {
+function CurrentPlaces({ currentPlaces, setIsClose, mapRef }) {
   useEffect(() => {
-    console.log(currentPlaces);
     setIsClose(true);
-    console.log(IsClose);
-  });
+  }, []);
+
+  const handleClick = (coords) => {
+    mapRef.current.panTo(coords, {
+      flying: true,
+      duration: 500,
+    });
+  };
   return (
     <Wrapper>
-      {currentPlaces.map((place) => (
-        <PlaceItem key={place.properties.CompanyMetaData.id}>
-          <Title>
-            {place.properties.name}
-          </Title>
-          <Street>
-            {place.properties.description}
-          </Street>
-          <PlaceUrl>
+      {currentPlaces.map(({ properties, geometry }) => (
+        <PlaceItem
+          key={properties.CompanyMetaData.id}
+          role="button"
+          onClick={() => handleClick(geometry.coordinates)}
+        >
+          <Title>{properties.name}</Title>
+          <Street>{properties.description}</Street>
+          <PlaceLink href={properties.CompanyMetaData?.url} target="_blank">
             Сайт -
-            {place.properties.CompanyMetaData.url ? place.properties.CompanyMetaData.url : 'Нету сайта'}
-          </PlaceUrl>
-          <Hours>
-            {place.properties.CompanyMetaData.Hours.text}
-          </Hours>
+            {properties.CompanyMetaData?.url || 'Отсутствует'}
+          </PlaceLink>
+          <HoursInfo>{properties.CompanyMetaData?.Hours?.text || 'Неизвестно'}</HoursInfo>
         </PlaceItem>
       ))}
     </Wrapper>
