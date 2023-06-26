@@ -1,9 +1,11 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { addSuggetstView, suggestEvent } from 'Utils/Map/addSuggestView';
 import addMultiRoute from 'Utils/Map/addMultiRoute';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { MapYContext } from 'components/map/MapContext';
+
 import routeTypes from './routeTypes';
 import {
   Wrapper,
@@ -19,9 +21,11 @@ function RouteControl({ mapRef }) {
   const [routeTo, setRouteTo] = useState('');
   const [routeFromSuggest, setRouteFromSuggest] = useState('');
   const [routeToSuggest, setRouteToSuggest] = useState('');
-  const [multiRoute, setMultiRoute] = useState();
   const [activeType, setActiveType] = useState(routeTypes[0].type);
-
+  const {
+    setMultiRoute,
+    multiRoute,
+  } = useContext(MapYContext);
   const { ymaps } = window;
 
   useEffect(() => {
@@ -49,6 +53,7 @@ function RouteControl({ mapRef }) {
     setRouteTo('');
     setMultiRoute(newMultiRoute);
   };
+
   const handleType = (type) => {
     if (multiRoute) {
       setActiveType(type);

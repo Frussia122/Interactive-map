@@ -67,3 +67,19 @@ export const HoursInfo = styled.div`
   margin-top: 5px;
   font-size: 12px;
 `;
+export const Button = styled.button`
+background-color:transparent;
+border: none;
+margin-right: 15px;
+cursor: pointer;
+svg{
+  font-size: 20px;
+  &:hover{
+    color: red;
+  }
+}
+
+`;
+export const ButtonWrapper = styled.div`
+margin-top: 15px;
+`;
