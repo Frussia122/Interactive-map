@@ -6,6 +6,7 @@ import { faLocationArrow, faRoute, faStar } from '@fortawesome/free-solid-svg-ic
 import addMultiRoute from 'Utils/Controls/addMultiRoute';
 import { MapYContext } from 'components/map/MapContext';
 
+import removeMarkers from 'Utils/Controls/removeMarkers';
 import {
   Wrapper,
   PlaceItem,
@@ -38,6 +39,7 @@ function CurrentPlaces({ currentPlaces, mapRef }) {
     });
   };
   const handleRoute = (coords) => {
+    removeMarkers(mapRef);
     const lng = localStorage.getItem('currentLongitude');
     const lat = localStorage.getItem('currentLatitude');
     if (lat && lng) {
