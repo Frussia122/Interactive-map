@@ -2,7 +2,7 @@ import getPlaces from 'services/getPlaces';
 
 const { ymaps } = window;
 const searchProvider = async (mapRef, inputValue, setCurrentPlaces, setPlacesPanel) => {
-  const res = await getPlaces(inputValue, 0.2);
+  const res = await getPlaces(inputValue, 0.02);
 
   const markersToRemove = [];
   mapRef.current.geoObjects.each((geoObject) => {
@@ -24,10 +24,11 @@ const searchProvider = async (mapRef, inputValue, setCurrentPlaces, setPlacesPan
       const { name, description } = properties;
       const placemark = new ymaps.Placemark(coordinates, {
         hintContent: `${name}`,
-        balloonContent: `${name} ${description}`,
+        balloonContentHeader: `${name}`,
+        balloonContentBody: `${description}`,
       }, {
-        preset: 'islands#dotIcon',
-        iconColor: '#735184',
+        preset: 'islands#circleIcon',
+        iconColor: 'red',
       });
       mapRef.current.geoObjects.add(placemark);
     });

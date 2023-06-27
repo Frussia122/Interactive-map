@@ -24,7 +24,6 @@ function MapY({ isOpen, setIsOpen }) {
     placesPanel,
     setPlacesPanel,
     currentPlaces,
-    setCurrentPlaces,
     routePanel,
     setRoutePanel,
     inputValue,
@@ -75,10 +74,6 @@ function MapY({ isOpen, setIsOpen }) {
     >
       <SearchControl
         mapRef={mapRef}
-        inputValue={inputValue}
-        setInputValue={setInputValue}
-        setPlacesPanel={setPlacesPanel}
-        setCurrentPlaces={setCurrentPlaces}
         currentPlaces={currentPlaces}
       />
       <RouteButton onClick={handleRoutePanel}>

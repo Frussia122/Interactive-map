@@ -9,6 +9,7 @@ export function MapYProvider({ children }) {
   const [routePanel, setRoutePanel] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [isClose, setIsClose] = useState(false);
+  const [multiRoute, setMultiRoute] = useState();
 
   return (
     <MapYContext.Provider
@@ -24,6 +25,8 @@ export function MapYProvider({ children }) {
         setInputValue,
         isClose,
         setIsClose,
+        multiRoute,
+        setMultiRoute,
       }}
     >
       {children}

@@ -1,5 +1,10 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLocationArrow, faRoute, faStar } from '@fortawesome/free-solid-svg-icons';
+import addMultiRoute from 'Utils/Map/addMultiRoute';
+import { MapYContext } from 'components/map/MapContext';
+
 import {
   Wrapper,
   PlaceItem,
@@ -7,18 +12,40 @@ import {
   Street,
   PlaceLink,
   HoursInfo,
+  Button,
+  ButtonWrapper,
 } from './styled';
 
-function CurrentPlaces({ currentPlaces, setIsClose, mapRef }) {
+function CurrentPlaces({ currentPlaces, mapRef }) {
+  const {
+    setMultiRoute,
+    setRoutePanel,
+    setIsClose,
+    routePanel,
+  } = useContext(MapYContext);
+
   useEffect(() => {
     setIsClose(true);
   }, []);
 
-  const handleClick = (coords) => {
-    mapRef.current.panTo(coords, {
-      flying: true,
-      duration: 500,
+  const handlePanToLocation = (coords) => {
+    mapRef.current.geoObjects.each((geoObject) => {
+      // eslint-disable-next-line no-underscore-dangle
+      if (geoObject.geometry._coordinates === coords) {
+        geoObject.balloon.open();
+        mapRef.current.setCenter(coords);
+      }
     });
+  };
+  const handleRoute = (coords) => {
+    const lng = localStorage.getItem('currentLongitude');
+    const lat = localStorage.getItem('currentLatitude');
+    if (lat && lng) {
+      const currentRoute = addMultiRoute(mapRef, [lat, lng], coords);
+      setMultiRoute(currentRoute);
+      setRoutePanel(!routePanel);
+      setIsClose(true);
+    }
   };
   return (
     <Wrapper>
@@ -26,7 +53,6 @@ function CurrentPlaces({ currentPlaces, setIsClose, mapRef }) {
         <PlaceItem
           key={properties.CompanyMetaData.id}
           role="button"
-          onClick={() => handleClick(geometry.coordinates)}
         >
           <Title>{properties.name}</Title>
           <Street>{properties.description}</Street>
@@ -35,6 +61,17 @@ function CurrentPlaces({ currentPlaces, setIsClose, mapRef }) {
             {properties.CompanyMetaData?.url || 'Отсутствует'}
           </PlaceLink>
           <HoursInfo>{properties.CompanyMetaData?.Hours?.text || 'Неизвестно'}</HoursInfo>
+          <ButtonWrapper>
+            <Button onClick={() => handlePanToLocation(geometry.coordinates)}>
+              <FontAwesomeIcon icon={faLocationArrow} />
+            </Button>
+            <Button onClick={() => handleRoute(properties.description)}>
+              <FontAwesomeIcon icon={faRoute} />
+            </Button>
+            <Button>
+              <FontAwesomeIcon icon={faStar} />
+            </Button>
+          </ButtonWrapper>
         </PlaceItem>
       ))}
     </Wrapper>
