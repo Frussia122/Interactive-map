@@ -67,5 +67,3 @@
   <li><a href="https://yandex.com/dev/search/">Yandex API Search</a></li>
   <li><a href="https://eslint.org/">ESLint</a></li>
 </ul>
-
-<p>Feel free to customize the readme further according to your project's specific details and requirements.</p>
