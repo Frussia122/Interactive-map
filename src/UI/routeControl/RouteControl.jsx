@@ -5,6 +5,7 @@ import { addSuggetstView, suggestEvent } from 'Utils/Controls/addSuggestView';
 import addMultiRoute from 'Utils/Controls/addMultiRoute';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { MapYContext } from 'components/map/MapContext';
+import RouteInfo from 'components/RouteInfo/RouteInfo';
 import routeInputs from './routeInputs';
 
 import routeTypes from './routeTypes';
@@ -23,10 +24,12 @@ function RouteControl({ mapRef }) {
   const [routeFromSuggest, setRouteFromSuggest] = useState('');
   const [routeToSuggest, setRouteToSuggest] = useState('');
   const [activeType, setActiveType] = useState(routeTypes[0].type);
+
   const {
     setMultiRoute,
     multiRoute,
   } = useContext(MapYContext);
+
   const { ymaps } = window;
 
   useEffect(() => {
@@ -86,11 +89,13 @@ function RouteControl({ mapRef }) {
             value={input.id === 'routeTo' ? routeTo : routeFrom}
             onChange={(e) => handleRouteChange(e, input.type)}
             id={input.id}
+            key={input.id}
             placeholder={input.placeholder}
           />
         ))}
       </InputWrapper>
       <Button onClick={handleRouteClick}>Проложить маршрут</Button>
+      {multiRoute && <RouteInfo />}
     </Wrapper>
   );
 }

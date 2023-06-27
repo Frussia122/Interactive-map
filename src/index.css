@@ -100,3 +100,16 @@ code {
 .ymaps-2-1-79-gotoymaps, .ymaps-2-1-79-map-copyrights-promo{
   display: none !important;
 }
+.activeRoute{
+  background-color: #f6f6f6;
+  position: relative;
+}
+.activeRoute::before {
+  position: absolute;
+  content: "";
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background-color: #196dff;
+}
