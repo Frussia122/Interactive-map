@@ -4,7 +4,6 @@ import React, {
   useEffect,
   useRef,
   useContext,
-  useState,
 } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowPointer, faClose, faRoute } from '@fortawesome/free-solid-svg-icons';
@@ -15,6 +14,8 @@ import createMarker from 'Utils/Map/createMarker';
 import SearchControl from 'UI/serachControl/SearchControl';
 import CurrentLocationControl from 'UI/currentLocationControl/CurrentLocationControl';
 import Controls from 'components/Controls/Controls';
+import handlePlacesPanel from 'Utils/interactionWithPanel/handlePlacesPanel';
+import removeMarkers from 'Utils/Controls/removeMarkers';
 import { MapYContext } from './MapContext';
 
 import { RouteButton, Button } from './styled';
@@ -30,6 +31,8 @@ function MapY({ isOpen, setIsOpen }) {
     setInputValue,
     isClose,
     setIsClose,
+    multiRoute,
+    setMultiRoute,
   } = useContext(MapYContext);
 
   const { ymaps } = window;
@@ -55,12 +58,12 @@ function MapY({ isOpen, setIsOpen }) {
   };
 
   const handleRoutePanel = () => {
+    removeMarkers(mapRef);
     if (inputValue) {
-      setInputValue('');
+      setInputValue(''); // Очистка поля ввода
     } else if (placesPanel) {
-      setIsClose(!isClose);
-      setRoutePanel(false);
-      setPlacesPanel(false);
+      // eslint-disable-next-line max-len
+      handlePlacesPanel(setIsClose, isClose, multiRoute, setMultiRoute, setRoutePanel, setPlacesPanel);
     } else {
       setRoutePanel(!routePanel);
       setIsClose(!isClose);

@@ -1,21 +1,10 @@
 /* eslint-disable react/prop-types */
 import React, { useContext } from 'react';
-import styled from 'styled-components';
 import MapCategory from 'UI/MapCategory/MapCategory';
 import RouteControl from 'UI/routeControl/RouteControl';
 import CurrentPlaces from 'components/CurrentPlaces/CurrentPlaces';
 import { MapYContext } from 'components/map/MapContext';
-
-export const Wrapper = styled.div`
-  background: white;
-  height: 100vh;
-  width: 400px;
-  z-index: 1005;
-  top: 0;
-  left: 0;
-  position: absolute;
-  transition: all 0.2s linear;
-`;
+import Wrapper from './styled';
 
 function Controls({ mapRef, isOpen }) {
   const {
@@ -32,12 +21,19 @@ function Controls({ mapRef, isOpen }) {
     <Wrapper style={isOpen ? { left: '0' } : { left: '-100%' }}>
       {routePanel && <RouteControl mapRef={mapRef} />}
       {!routePanel && placesPanel && (
-      // eslint-disable-next-line max-len
-        <CurrentPlaces mapRef={mapRef} currentPlaces={currentPlaces} setIsClose={setIsClose} isClose={isClose} />
+        <CurrentPlaces
+          mapRef={mapRef}
+          currentPlaces={currentPlaces}
+          setIsClose={setIsClose}
+          isClose={isClose}
+        />
       )}
       {!routePanel && !placesPanel && (
-        // eslint-disable-next-line max-len
-        <MapCategory mapRef={mapRef} setCurrentPlaces={setCurrentPlaces} setPlacesPanel={setPlacesPanel} />
+        <MapCategory
+          mapRef={mapRef}
+          setCurrentPlaces={setCurrentPlaces}
+          setPlacesPanel={setPlacesPanel}
+        />
       )}
     </Wrapper>
   );
