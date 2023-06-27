@@ -1,4 +1,4 @@
-<h1>Project Title</h1>
+<h1>Traveler</h1>
 
 <h2>Description</h2>
 
