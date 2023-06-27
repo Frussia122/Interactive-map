@@ -16,7 +16,7 @@ const addMultiRoute = (mapRef, routeFrom, routeTo) => {
       routeTo,
     ],
     params: {
-      routingMode: 'masstransit',
+      routingMode: 'auto',
     },
   }, {
     boundsAutoApply: true,

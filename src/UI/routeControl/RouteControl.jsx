@@ -1,10 +1,11 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect, useContext } from 'react';
-import { addSuggetstView, suggestEvent } from 'Utils/Map/addSuggestView';
-import addMultiRoute from 'Utils/Map/addMultiRoute';
+import { addSuggetstView, suggestEvent } from 'Utils/Controls/addSuggestView';
+import addMultiRoute from 'Utils/Controls/addMultiRoute';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { MapYContext } from 'components/map/MapContext';
+import routeInputs from './routeInputs';
 
 import routeTypes from './routeTypes';
 import {
@@ -80,18 +81,14 @@ function RouteControl({ mapRef }) {
         ))}
       </TypesWrapper>
       <InputWrapper>
-        <Input
-          value={routeFrom}
-          onChange={(e) => handleRouteChange(e, 'from')}
-          id="routeFrom"
-          placeholder="От куда?"
-        />
-        <Input
-          value={routeTo}
-          onChange={(e) => handleRouteChange(e, 'to')}
-          id="routeTo"
-          placeholder="Куда?"
-        />
+        {routeInputs.map((input) => (
+          <Input
+            value={input.id === 'routeTo' ? routeTo : routeFrom}
+            onChange={(e) => handleRouteChange(e, input.type)}
+            id={input.id}
+            placeholder={input.placeholder}
+          />
+        ))}
       </InputWrapper>
       <Button onClick={handleRouteClick}>Проложить маршрут</Button>
     </Wrapper>

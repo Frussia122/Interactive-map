@@ -55,13 +55,13 @@ function MapY({ isOpen, setIsOpen }) {
   };
 
   const handleRoutePanel = () => {
-    if (inputValue) {
+    if (inputValue) { // отчиска поля ввода
       setInputValue('');
-    } else if (placesPanel) {
+    } else if (placesPanel) { // включение панели со всеми найденными местами
       setIsClose(!isClose);
       setRoutePanel(false);
       setPlacesPanel(false);
-    } else {
+    } else { // Включение панели с маршрутами
       setRoutePanel(!routePanel);
       setIsClose(!isClose);
     }

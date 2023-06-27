@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState, useContext } from 'react';
-import searchProvider from 'Utils/Map/searchProvider';
-import { addSuggetstView, suggestEvent } from 'Utils/Map/addSuggestView';
+import searchProvider from 'Utils/Controls/searchProvider';
+import { addSuggetstView, suggestEvent } from 'Utils/Controls/addSuggestView';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearchLocation } from '@fortawesome/free-solid-svg-icons';

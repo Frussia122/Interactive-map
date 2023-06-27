@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import searchProvider from 'Utils/Map/searchProvider';
+import searchProvider from 'Utils/Controls/searchProvider';
 import categories from './categories';
 
 import { CategoriesWrapper, CategorieItem } from './styled';

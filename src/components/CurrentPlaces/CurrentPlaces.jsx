@@ -1,8 +1,9 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable react/prop-types */
 import React, { useEffect, useContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationArrow, faRoute, faStar } from '@fortawesome/free-solid-svg-icons';
-import addMultiRoute from 'Utils/Map/addMultiRoute';
+import addMultiRoute from 'Utils/Controls/addMultiRoute';
 import { MapYContext } from 'components/map/MapContext';
 
 import {
@@ -30,7 +31,6 @@ function CurrentPlaces({ currentPlaces, mapRef }) {
 
   const handlePanToLocation = (coords) => {
     mapRef.current.geoObjects.each((geoObject) => {
-      // eslint-disable-next-line no-underscore-dangle
       if (geoObject.geometry._coordinates === coords) {
         geoObject.balloon.open();
         mapRef.current.setCenter(coords);

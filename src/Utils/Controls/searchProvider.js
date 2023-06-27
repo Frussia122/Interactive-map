@@ -2,7 +2,7 @@ import getPlaces from 'services/getPlaces';
 
 const { ymaps } = window;
 const searchProvider = async (mapRef, inputValue, setCurrentPlaces, setPlacesPanel) => {
-  const res = await getPlaces(inputValue, 0.02);
+  const res = await getPlaces(inputValue, 0.1);
 
   const markersToRemove = [];
   mapRef.current.geoObjects.each((geoObject) => {
