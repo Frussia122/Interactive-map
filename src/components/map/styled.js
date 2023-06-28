@@ -9,6 +9,7 @@ export const Wrapper = styled.div`
   left: 0;
   position: absolute;
   transition: all 0.2s linear;
+  overflow: hidden;
 `;
 export const Button = styled.button`
   position: absolute;
