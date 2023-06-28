@@ -1,5 +1,7 @@
-/* eslint-disable no-unused-vars */
 import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
+
+const URL = 'https://traveler-d316e-default-rtdb.firebaseio.com';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -8,6 +10,11 @@ const firebaseConfig = {
   storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  databaseURL: URL,
 };
 
 const app = initializeApp(firebaseConfig);
+
+// eslint-disable-next-line no-unused-vars
+const db = getFirestore(app);
+export default db;

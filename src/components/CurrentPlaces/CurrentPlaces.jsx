@@ -2,11 +2,12 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLocationArrow, faRoute, faStar } from '@fortawesome/free-solid-svg-icons';
+import { faLocationArrow, faRoute } from '@fortawesome/free-solid-svg-icons';
 import addMultiRoute from 'Utils/Controls/addMultiRoute';
 import { MapYContext } from 'components/map/MapContext';
 
 import removeMarkers from 'Utils/Controls/removeMarkers';
+import AddToFavorites from 'UI/addToFavorites/AddToFavorites';
 import {
   Wrapper,
   PlaceItem,
@@ -24,6 +25,7 @@ function CurrentPlaces({ currentPlaces, mapRef }) {
     setRoutePanel,
     setIsClose,
     routePanel,
+    uid,
   } = useContext(MapYContext);
 
   useEffect(() => {
@@ -70,9 +72,7 @@ function CurrentPlaces({ currentPlaces, mapRef }) {
             <Button onClick={() => handleRoute(properties.description)}>
               <FontAwesomeIcon icon={faRoute} />
             </Button>
-            <Button>
-              <FontAwesomeIcon icon={faStar} />
-            </Button>
+            <AddToFavorites uid={uid} properties={properties} geometry={geometry} />
           </ButtonWrapper>
         </PlaceItem>
       ))}

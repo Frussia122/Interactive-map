@@ -16,6 +16,8 @@ import CurrentLocationControl from 'UI/currentLocationControl/CurrentLocationCon
 import Controls from 'components/Controls/Controls';
 import handlePlacesPanel from 'Utils/interactionWithPanel/handlePlacesPanel';
 import removeMarkers from 'Utils/Controls/removeMarkers';
+import Favorites from 'components/Favorites/Favorites';
+import useAuth from 'hooks/use-auth';
 import { MapYContext } from './MapContext';
 
 import { RouteButton, Button } from './styled';
@@ -33,8 +35,13 @@ function MapY({ isOpen, setIsOpen }) {
     setIsClose,
     multiRoute,
     setMultiRoute,
+    uid,
+    setUid,
   } = useContext(MapYContext);
-
+  const { id } = useAuth();
+  useEffect(() => {
+    setUid(id);
+  }, [id]);
   const { ymaps } = window;
   const mapRef = useRef(null);
 
@@ -95,7 +102,7 @@ function MapY({ isOpen, setIsOpen }) {
       </Button>
       <Controls mapRef={mapRef} isOpen={isOpen} />
       <CurrentLocationControl mapRef={mapRef} />
-
+      {uid && <Favorites userId={id} />}
     </div>
   );
 }

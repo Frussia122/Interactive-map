@@ -10,7 +10,7 @@ import MapY from 'components/map/Map';
 
 function HomePage() {
   const [isOpen, setIsOpen] = useState(true);
-  const { token, userName } = useAuth();
+  const { token } = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -55,8 +55,7 @@ function HomePage() {
           dispatch(removeUser());
         }}
       >
-        Log Out from&nbsp;
-        {userName}
+        Log Out
       </Link>
     </>
   );

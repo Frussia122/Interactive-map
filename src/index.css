@@ -46,7 +46,6 @@ code {
   z-index: -1;
 }
 
-
 #map {
   position: absolute;
   width: 100%;
@@ -112,4 +111,10 @@ code {
   width: 4px;
   height: 100%;
   background-color: #196dff;
+}
+.asdasd{
+  position: absolute;
+  z-index: 1050;
+  right: 0;
+  top: 0;
 }
