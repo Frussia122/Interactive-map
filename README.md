@@ -27,12 +27,12 @@
   <li>Show Location Button: Users can view their current location on the map.</li>
   <li>Place Interaction: Users can interact with a place by navigating to it or getting a route to it.</li>
   <li>User Registration and Authentication: Users can register and log in to the application to access personalized features.</li>
+  <li>Adding Places to Favorites: Users will be able to add places to their favorites list.</li>
 </ul>
 
 <h2>In Progress</h2>
 
 <ul>
-  <li>Adding Places to Favorites: Users will be able to add places to their favorites list.</li>
   <li>Error Handling: Improved error handling and error messages for better user experience.</li>
 </ul>
 
