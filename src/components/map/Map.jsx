@@ -38,10 +38,12 @@ function MapY({ isOpen, setIsOpen }) {
     uid,
     setUid,
   } = useContext(MapYContext);
+
   const { id } = useAuth();
   useEffect(() => {
     setUid(id);
   }, [id]);
+
   const { ymaps } = window;
   const mapRef = useRef(null);
 
@@ -102,7 +104,7 @@ function MapY({ isOpen, setIsOpen }) {
       </Button>
       <Controls mapRef={mapRef} isOpen={isOpen} />
       <CurrentLocationControl mapRef={mapRef} />
-      {uid && <Favorites userId={id} />}
+      {uid && <Favorites userId={id} mapRef={mapRef} />}
     </div>
   );
 }

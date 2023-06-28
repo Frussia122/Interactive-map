@@ -33,11 +33,9 @@ function AddToFavorites({ properties, geometry, uid }) {
       try {
         const favoritesRef = collection(db, `${uid}`);
         const querySnapshot = await getDocs(query(favoritesRef, where('place.id', '==', existingPlace.id)));
-
         querySnapshot.forEach(async (doc) => {
           await deleteDoc(doc.ref);
         });
-
         dispatch(removeFromFavorite(existingPlace));
       } catch (e) {
         console.error('Error removing document: ', e);
