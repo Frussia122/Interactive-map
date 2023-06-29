@@ -1,63 +1,66 @@
-import React, { useState } from 'react';
-import { AuthWraper, AuthInput, AuthButton } from './styled';
+/* eslint-disable react/prop-types */
+/* eslint-disable import/no-extraneous-dependencies */
+import React from 'react';
+import {
+  Formik,
+} from 'formik';
+import {
+  AuthWraper,
+  AuthButton,
+  AuthInput,
+  Error,
+} from './styled';
 
-// eslint-disable-next-line react/prop-types
 function AuthForm({ title, handleClick, type }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [userName, setUserName] = useState('');
-
   return (
-    type === 'login' ? (
+    <Formik
+      initialValues={{
+        email: '',
+        password: '',
+        userName: '',
+      }}
+      validate={(values) => {
+        const errors = {};
+
+        if (!values.email) {
+          errors.email = 'Email is required';
+        } else if (
+          !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(values.email)
+        ) {
+          errors.email = 'Invalid email address';
+        }
+
+        if (!values.password) {
+          errors.password = 'Password is required';
+        } else if (values.password.length < 6) {
+          errors.password = 'Password must be at least 6 characters long';
+        }
+
+        if (type === 'registration' && !values.userName) {
+          errors.userName = 'Username is required';
+        }
+
+        return errors;
+      }}
+      onSubmit={(values, { setSubmitting }) => {
+        handleClick(values);
+        setSubmitting(false);
+      }}
+    >
       <AuthWraper>
-        <AuthInput
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
-        />
-
-        <AuthInput
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-        />
-
-        <AuthButton
-          onClick={() => handleClick(email, password)}
-        >
-          {title}
-        </AuthButton>
+        {type === 'registration' && (
+        <>
+          <AuthInput type="text" name="userName" placeholder="Username" />
+          <Error name="userName" component="div" className="error" />
+        </>
+        )}
+        <AuthInput type="email" name="email" placeholder="Email" />
+        <Error name="email" component="div" className="error" />
+        <AuthInput type="password" name="password" placeholder="Password" />
+        <Error name="password" component="div" className="error" />
+        <AuthButton type="submit">{title}</AuthButton>
       </AuthWraper>
-    ) : (
-      <AuthWraper>
-        <AuthInput
-          type="text"
-          value={userName}
-          onChange={(e) => setUserName(e.target.value)}
-          placeholde="FirstName"
-        />
-        <AuthInput
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
-        />
-
-        <AuthInput
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-        />
-        <AuthButton
-          onClick={() => handleClick(email, password, userName)}
-        >
-          {title}
-        </AuthButton>
-      </AuthWraper>
-    )
+    </Formik>
   );
 }
 
