@@ -69,11 +69,13 @@ function MapY({ isOpen, setIsOpen }) {
   const handleRoutePanel = () => {
     removeMarkers(mapRef);
     if (inputValue) {
-      setInputValue(''); // Очистка поля ввода
+      setIsOpen(true);
+      setInputValue('');
     } else if (placesPanel) {
       // eslint-disable-next-line max-len
-      handlePlacesPanel(setIsClose, isClose, multiRoute, setMultiRoute, setRoutePanel, setPlacesPanel);
+      handlePlacesPanel(setIsClose, isClose, multiRoute, setMultiRoute, setRoutePanel, setPlacesPanel, setIsOpen);
     } else {
+      setIsOpen(true);
       setRoutePanel(!routePanel);
       setIsClose(!isClose);
     }
@@ -85,6 +87,7 @@ function MapY({ isOpen, setIsOpen }) {
       ref={mapRef}
     >
       <SearchControl
+        setIsOpen={setIsOpen}
         mapRef={mapRef}
         currentPlaces={currentPlaces}
       />
@@ -104,7 +107,7 @@ function MapY({ isOpen, setIsOpen }) {
       </Button>
       <Controls mapRef={mapRef} isOpen={isOpen} />
       <CurrentLocationControl mapRef={mapRef} />
-      {uid && <Favorites userId={id} mapRef={mapRef} />}
+      {uid && <Favorites setIsOpen={setIsOpen} userId={id} mapRef={mapRef} />}
     </div>
   );
 }

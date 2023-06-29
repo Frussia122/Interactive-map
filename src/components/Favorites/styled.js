@@ -3,13 +3,16 @@ import styled from 'styled-components';
 export const Wrapper = styled.div`
 position: absolute;
 z-index: 1050;
-width: 280px;
+width: 320px;
 padding: 80px 0 0 0;
 right: 0;
 top: 0;
 background-color: white;
 transition: all 0.2s linear;
-height: 100%;
+height: 90%;
+overflow-y: auto;
+padding-bottom: 60px;
+
 `;
 export const Button = styled.button`
 cursor: pointer;
@@ -52,4 +55,9 @@ export const Address = styled.div`
 font-size: 12px;
   margin: 5px 0;
   color: gray;
+`;
+
+export const Empty = styled.div`
+font-size: 24px;
+text-align: center;
 `;

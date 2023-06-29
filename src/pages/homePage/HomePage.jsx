@@ -9,7 +9,7 @@ import { MapYProvider } from 'components/map/MapContext';
 import MapY from 'components/map/Map';
 
 function HomePage() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const { token } = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();

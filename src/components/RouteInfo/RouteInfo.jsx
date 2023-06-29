@@ -1,38 +1,16 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { MapYContext } from 'components/map/MapContext';
-import styled from 'styled-components';
+import duck from 'assets/PreLoaders/duck.gif';
 
-const Wrapper = styled.div`
-margin-top: 20px;
-`;
-
-const Routes = styled.ul`
-margin: 0;
-padding: 0;
-`;
-
-const RoutesItem = styled.li`
-    transition: all 0.2s linear;
-    list-style: none;
-    padding: 20px 15px;
-    cursor: pointer;
-    border-bottom: 1px solid #f6f6f6;
-`;
-
-const Content = styled.div`
-    display: flex;
-    justify-content: space-between;
-`;
-
-const Duration = styled.span`
-    font-weight: semi-bold;
-    font-size: 20px;
-    margin-right: 10px;
-`;
-
-const Distance = styled.span`
-    font-size: 20px;
-`;
+import {
+  Wrapper,
+  Routes,
+  RoutesItem,
+  Content,
+  Duration,
+  Distance,
+  Preloader,
+} from './styled';
 
 function RouteInfo() {
   const { multiRoute } = useContext(MapYContext);
@@ -84,7 +62,7 @@ function RouteInfo() {
           ))}
         </Routes>
       ) : (
-        <p>Загрузка данных маршрута...</p>
+        <Preloader src={duck} alt="preloader" />
       )}
     </Wrapper>
   );

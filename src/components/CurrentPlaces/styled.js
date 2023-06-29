@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Wrapper = styled.ul`
   margin-top: 80px;
   padding: 0;
-  overflow-y: scroll;
+  overflow-y: auto;
   margin-bottom: 50px;
   height: 700px;
 `;
@@ -82,4 +82,8 @@ svg{
 `;
 export const ButtonWrapper = styled.div`
 margin-top: 15px;
+`;
+
+export const Preloader = styled.img`
+margin-top: 50px;
 `;

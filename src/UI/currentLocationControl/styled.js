@@ -2,9 +2,9 @@ import styled from 'styled-components';
 
 export const Wrapper = styled.div`
     position: absolute;
-    right: 10px;
+    right: 50%;
     z-index: 1000;
-    top: 50%;
+    top: 20px;
 `;
 export const Button = styled.button`
     background-color: white;

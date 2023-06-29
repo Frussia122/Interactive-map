@@ -24,6 +24,7 @@ function RouteControl({ mapRef }) {
   const [routeFromSuggest, setRouteFromSuggest] = useState('');
   const [routeToSuggest, setRouteToSuggest] = useState('');
   const [activeType, setActiveType] = useState(routeTypes[0].type);
+  const [routeError, setRouteError] = useState(null);
 
   const {
     setMultiRoute,
@@ -52,10 +53,12 @@ function RouteControl({ mapRef }) {
   };
 
   const handleRouteClick = () => {
-    const newMultiRoute = addMultiRoute(mapRef, routeFrom, routeTo);
-    setRouteFrom('');
-    setRouteTo('');
-    setMultiRoute(newMultiRoute);
+    if (routeFrom && routeTo) {
+      const newMultiRoute = addMultiRoute(mapRef, routeFrom, routeTo, setRouteError);
+      setRouteFrom('');
+      setRouteTo('');
+      setMultiRoute(newMultiRoute);
+    }
   };
 
   const handleType = (type) => {

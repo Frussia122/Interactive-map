@@ -13,24 +13,26 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBookmark } from '@fortawesome/free-solid-svg-icons';
 import searchProvider from 'Utils/Controls/searchProvider';
 import { MapYContext } from 'components/map/MapContext';
-
+import duck from 'assets/PreLoaders/duck.gif';
 import {
   Button,
   Wrapper,
   Place,
   Name,
   Address,
+  Empty,
 } from './styled';
 
-function Favorites({ userId, mapRef }) {
+function Favorites({ userId, mapRef, setIsOpen }) {
   const {
     setPlacesPanel,
     setCurrentPlaces,
   } = useContext(MapYContext);
+
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorite.favorites);
   const [isLoading, setIsLoading] = useState(true);
-  const [isFavorites, setIsFavorites] = useState(false);
+  const [isFavorites, setIsFavorites] = useState(true);
 
   const handleDataChange = (snapshot) => {
     snapshot.docChanges().forEach((change) => {
@@ -74,11 +76,13 @@ function Favorites({ userId, mapRef }) {
       unsubscribe();
     };
   }, [userId]);
+
   const handleClick = () => {
     setIsFavorites(!isFavorites);
   };
 
   const handleSearch = (inputValue, name) => {
+    setIsOpen(true);
     searchProvider(mapRef, inputValue, setCurrentPlaces, setPlacesPanel, 'filter', name);
   };
   return (
@@ -87,16 +91,20 @@ function Favorites({ userId, mapRef }) {
         <FontAwesomeIcon icon={faBookmark} />
       </Button>
       <Wrapper className={`${isFavorites ? 'activeFavorites' : ''}`}>
-        {isLoading ? (
-          <p>Loading...</p>
-        ) : (
-          favorites.map((place) => (
-            <Place type="button" onClick={() => handleSearch(place.name, place.description)} key={place.id}>
-              <Name>{place.name}</Name>
-              <Address>{place.description}</Address>
-            </Place>
-          ))
-        )}
+        {favorites.length > 0 ? (
+          <div>
+            {isLoading ? (
+              <img src={duck} alt="asd" />
+            ) : (
+              favorites.map((place) => (
+                <Place type="button" onClick={() => handleSearch(place.name, place.description)} key={place.id}>
+                  <Name>{place.name}</Name>
+                  <Address>{place.description}</Address>
+                </Place>
+              ))
+            )}
+          </div>
+        ) : <Empty>В ваше избранное еще ничего не добавлено</Empty>}
       </Wrapper>
 
     </>
