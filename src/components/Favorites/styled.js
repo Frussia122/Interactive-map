@@ -28,6 +28,13 @@ svg{
   font-size: 20px;
   color: white;
 }
+@media(max-width: 600px) {
+  right: 10px;
+  top: 16px;
+  svg{
+    font-size: 14px;
+  }
+}
 `;
 export const Name = styled.div`
 font-weight: semi-bold;

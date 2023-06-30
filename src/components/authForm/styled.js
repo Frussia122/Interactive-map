@@ -20,9 +20,12 @@ export const AuthInput = styled(Field)`
   border: 4px solid black;
   font-weight: bold;
   margin-bottom: 25px;
-  
+  margin-top: 5px;
   &:focus {
     border: 4px solid #5551ff;
+  }
+  @media(max-width: 600px) {
+    width: 300px;
   }
 
 `;
@@ -50,4 +53,7 @@ export const Error = styled(ErrorMessage)`
   margin-left: -20px;
   margin-top: -25px;
   text-align: left;
+  @media(max-width: 600px) {
+    margin-left: 20px;
+  }
 `;

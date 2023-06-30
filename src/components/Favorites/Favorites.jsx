@@ -82,6 +82,7 @@ function Favorites({ userId, mapRef, setIsOpen }) {
   };
 
   const handleSearch = (inputValue, name) => {
+    setIsFavorites(!isFavorites);
     setIsOpen(true);
     searchProvider(mapRef, inputValue, setCurrentPlaces, setPlacesPanel, 'filter', name);
   };

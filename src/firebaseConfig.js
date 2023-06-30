@@ -15,6 +15,5 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-// eslint-disable-next-line no-unused-vars
 const db = getFirestore(app);
 export default db;

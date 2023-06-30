@@ -32,6 +32,11 @@ export const Button = styled.button`
   &:hover{
     color: white;
   }
+  @media(max-width: 600px) {
+    left: 293px;
+    cursor: pointer;
+    top: 19px;
+  }
 `;
 
 export const RouteButton = styled.button`
@@ -51,4 +56,8 @@ export const RouteButton = styled.button`
     cursor: pointer;
     color: black;
     transition: all .2s linear;
+    @media(max-width: 600px) {
+      left: 240px;
+      top: 9.5px;
+    }
 `;

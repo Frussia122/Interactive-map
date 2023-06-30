@@ -3,8 +3,16 @@ import styled from 'styled-components';
 export const Wrapper = styled.div`
     position: absolute;
     right: 50%;
+    transform: translateX(50%);
     z-index: 1000;
-    top: 20px;
+    @media (max-width: 1250px) {
+        bottom: 20px !important;
+    }
+    @media (min-width: 1251px) {
+        top: 20px;
+        bottom: auto;
+    }
+    height: auto;
 `;
 export const Button = styled.button`
     background-color: white;

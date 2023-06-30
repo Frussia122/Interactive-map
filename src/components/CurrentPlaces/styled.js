@@ -5,7 +5,7 @@ export const Wrapper = styled.ul`
   padding: 0;
   overflow-y: auto;
   margin-bottom: 50px;
-  height: 700px;
+  height: 80vh;
 `;
 export const Title = styled.h4`
   font-weight: semi-bold;
