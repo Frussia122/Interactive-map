@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { removeUser, setUser } from 'store/slices/userSlice';
 import useAuth from 'hooks/use-auth';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { MapYProvider } from 'components/map/MapContext';
-
 import MapY from 'components/map/Map';
+import Button from './styled';
 
 function HomePage() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const { token } = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -45,10 +45,10 @@ function HomePage() {
       <MapYProvider>
         <MapY isOpen={isOpen} setIsOpen={setIsOpen} />
       </MapYProvider>
-      <Link
+      <Button
         className="logOut"
         style={isOpen
-          ? { left: '80px' } : { left: '-100%' }}
+          ? { left: '120px' } : { left: '-100%' }}
         to="/login"
         onClick={() => {
           localStorage.removeItem('accessToken');
@@ -56,7 +56,7 @@ function HomePage() {
         }}
       >
         Log Out
-      </Link>
+      </Button>
     </>
   );
 }

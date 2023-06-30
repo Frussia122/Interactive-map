@@ -7,6 +7,7 @@ import { addSuggetstView, suggestEvent } from 'Utils/Controls/addSuggestView';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearchLocation } from '@fortawesome/free-solid-svg-icons';
 import { MapYContext } from 'components/map/MapContext';
+
 import {
   Wrapper,
   Form,
@@ -14,12 +15,13 @@ import {
   Button,
 } from './styled';
 
-function SearchControl({ mapRef }) {
+function SearchControl({ mapRef, setIsOpen }) {
   const {
     inputValue,
     setInputValue,
     setPlacesPanel,
     setCurrentPlaces,
+    setRoutePanel,
   } = useContext(MapYContext);
 
   const [currentSuggest, setCurrentSuggest] = useState('');
@@ -27,8 +29,18 @@ function SearchControl({ mapRef }) {
   const { ymaps } = window;
 
   const handleSearch = () => {
-    searchProvider(mapRef, inputValue, setCurrentPlaces, setPlacesPanel);
-    setInputValue('');
+    if (inputValue) {
+      setIsOpen(true);
+      searchProvider(
+        mapRef,
+        inputValue,
+        setCurrentPlaces,
+        setPlacesPanel,
+        '',
+        '',
+      );
+      setInputValue('');
+    }
   };
 
   useEffect(() => {

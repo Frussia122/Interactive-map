@@ -18,6 +18,10 @@ export const Form = styled.form`
   &.focused {
     border-color: #0c8ce9;
   }
+  @media(max-width: 600px) {
+    margin-top: 10px;
+    margin-left: 10px;
+  }
 `;
 
 export const Input = styled.input`
@@ -30,6 +34,10 @@ export const Input = styled.input`
   background-color: #f6f6f6;
   outline: none;
   font-size: 14px;
+  @media(max-width: 600px) {
+    width:140px;
+    font-size:12px;
+  }
 `;
 
 export const Button = styled.button`

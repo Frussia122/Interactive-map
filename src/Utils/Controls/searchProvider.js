@@ -4,11 +4,19 @@ import removeMarkers from './removeMarkers';
 const { ymaps } = window;
 
 // eslint-disable-next-line max-len
-const searchProvider = async (mapRef, inputValue, setCurrentPlaces, setPlacesPanel, filter, Filtername) => {
+const searchProvider = async (
+  mapRef,
+  inputValue,
+  setCurrentPlaces,
+  setPlacesPanel,
+  filter,
+  Filtername,
+) => {
+  setPlacesPanel(true);
+  setCurrentPlaces([]);
   const res = await getPlaces(inputValue, 0.1);
 
   removeMarkers(mapRef);
-  console.log(inputValue);
   if (res) {
     let filteredPlaces = res;
 
@@ -40,14 +48,12 @@ const searchProvider = async (mapRef, inputValue, setCurrentPlaces, setPlacesPan
     });
 
     if (filter === 'filter' && inputValue && filteredPlaces.length > 0) {
-      setCurrentPlaces(filteredPlaces[0]); // Возвращаем первый найденный объект
+      setCurrentPlaces(filteredPlaces[0]);
     }
-
     setCurrentPlaces(filteredPlaces);
-    setPlacesPanel(true);
   }
 
-  return null; // Возвращаем null, если не найдено совпадений или не передан фильтр
+  return null;
 };
 
 export default searchProvider;

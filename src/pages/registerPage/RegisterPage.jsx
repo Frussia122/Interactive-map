@@ -5,7 +5,7 @@ import {
   Title,
   ActionButton,
   ActionLink,
-} from './styled';
+} from 'pages/loginPage/styled';
 
 import SignUp from '../../components/signUp/SignUp';
 

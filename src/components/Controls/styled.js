@@ -9,5 +9,9 @@ const Wrapper = styled.div`
   left: 0;
   position: absolute;
   transition: all 0.2s linear;
+
+  @media(max-width: 600px) {
+    width: 341px;
+  }
 `;
 export default Wrapper;

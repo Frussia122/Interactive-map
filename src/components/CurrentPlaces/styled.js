@@ -3,9 +3,9 @@ import styled from 'styled-components';
 export const Wrapper = styled.ul`
   margin-top: 80px;
   padding: 0;
-  overflow-y: scroll;
+  overflow-y: auto;
   margin-bottom: 50px;
-  height: 700px;
+  height: 80vh;
 `;
 export const Title = styled.h4`
   font-weight: semi-bold;
@@ -82,4 +82,8 @@ svg{
 `;
 export const ButtonWrapper = styled.div`
 margin-top: 15px;
+`;
+
+export const Preloader = styled.img`
+margin-top: 50px;
 `;

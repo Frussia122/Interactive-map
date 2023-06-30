@@ -18,7 +18,11 @@ export const LogoImg = styled.div`
 export const Wrapper = styled.section`
   margin: 0 auto;
   padding-top: 25vh;
-  width: 50%
+  width: 50%;
+  @media(max-width: 600px) {
+    width: 100%;
+    padding-top: 19vh;
+  }
 `;
 
 export const Title = styled.h1`
