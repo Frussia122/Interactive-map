@@ -55,8 +55,6 @@
 
 <h2>License</h2>
 
-<p>This project is licensed under the <a href="LICENSE">MIT License</a>.</p>
-
 <h2>Acknowledgments</h2>
 
 <ul>
