@@ -7,7 +7,8 @@ import { addSuggetstView, suggestEvent } from 'Utils/Controls/addSuggestView';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearchLocation } from '@fortawesome/free-solid-svg-icons';
 import { MapYContext } from 'components/map/MapContext';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { setRoutePanel, setPlacesPanel } from 'store/slices/controlsSlice';
 import {
   Wrapper,
   Form,
@@ -19,23 +20,22 @@ function SearchControl({ mapRef, setIsOpen }) {
   const {
     inputValue,
     setInputValue,
-    setPlacesPanel,
     setCurrentPlaces,
-    setRoutePanel,
   } = useContext(MapYContext);
 
   const [currentSuggest, setCurrentSuggest] = useState('');
 
   const { ymaps } = window;
+  const dispatch = useDispatch();
 
   const handleSearch = () => {
     if (inputValue) {
       setIsOpen(true);
+      dispatch(setPlacesPanel(true));
       searchProvider(
         mapRef,
         inputValue,
         setCurrentPlaces,
-        setPlacesPanel,
         '',
         '',
       );

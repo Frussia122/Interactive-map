@@ -13,7 +13,7 @@ export const CategoriesWrapper = styled.ul`
   border-top-left-radius: 12px;
   border-bottom-left-radius: 12px;
 `;
-export const CategorieItem = styled.li`
+export const CategoryItem = styled.li`
     cursor: pointer;
     text-align: center;
     list-style: none;

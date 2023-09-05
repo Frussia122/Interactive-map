@@ -2,19 +2,24 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import searchProvider from 'Utils/Controls/searchProvider';
+import { useDispatch } from 'react-redux';
+import { setPlacesPanel } from 'store/slices/controlsSlice';
 import categories from './categories';
 
-import { CategoriesWrapper, CategorieItem } from './styled';
+import { CategoriesWrapper, CategoryItem } from './styled';
 
-function MapCategory({ mapRef, setCurrentPlaces, setPlacesPanel }) {
-  const handleChoosenPlaces = (query) => {
-    searchProvider(mapRef, query, setCurrentPlaces, setPlacesPanel);
+function MapCategory({ mapRef, setCurrentPlaces }) {
+  const dispatch = useDispatch();
+
+  const handleChosenPlaces = (query) => {
+    dispatch(setPlacesPanel(true));
+    searchProvider(mapRef, query, setCurrentPlaces);
   };
   return (
     <CategoriesWrapper>
       {categories.map((category) => (
-        <CategorieItem
-          onClick={() => handleChoosenPlaces(category.query)}
+        <CategoryItem
+          onClick={() => handleChosenPlaces(category.query)}
           key={category.id}
         >
           <span>{category.title}</span>
@@ -31,7 +36,7 @@ function MapCategory({ mapRef, setCurrentPlaces, setPlacesPanel }) {
           >
             <FontAwesomeIcon icon={category.icon} />
           </div>
-        </CategorieItem>
+        </CategoryItem>
       ))}
     </CategoriesWrapper>
   );

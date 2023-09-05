@@ -10,7 +10,8 @@ import removeMarkers from 'Utils/Controls/removeMarkers';
 import AddToFavorites from 'UI/addToFavorites/AddToFavorites';
 import { handleRoute, handlePanToLocation } from 'Utils/Controls/currentPlacesHandlers';
 import duck from 'assets/PreLoaders/duck.gif';
-
+import { useDispatch } from 'react-redux';
+import { setIsClose, setRoutePanel } from 'store/slices/controlsSlice';
 import {
   Wrapper,
   PlaceItem,
@@ -24,17 +25,17 @@ import {
 } from './styled';
 
 function CurrentPlaces({ currentPlaces, mapRef }) {
+  const dispatch = useDispatch();
+
   const {
     setMultiRoute,
-    setRoutePanel,
-    setIsClose,
-    routePanel,
     uid,
   } = useContext(MapYContext);
+
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setIsClose(true);
+    dispatch(setIsClose(true));
   }, []);
 
   useEffect(() => {
@@ -43,6 +44,16 @@ function CurrentPlaces({ currentPlaces, mapRef }) {
     }
   }, [currentPlaces]);
 
+  const handleClick = (coords) => {
+    dispatch(setRoutePanel(true));
+    handleRoute(
+      coords,
+      mapRef,
+      removeMarkers,
+      setMultiRoute,
+      addMultiRoute,
+    );
+  };
   return (
     <Wrapper>
       {isLoading ? (
@@ -64,17 +75,7 @@ function CurrentPlaces({ currentPlaces, mapRef }) {
               <Button onClick={() => handlePanToLocation(geometry.coordinates, mapRef)}>
                 <FontAwesomeIcon icon={faLocationArrow} />
               </Button>
-              <Button onClick={() => handleRoute(
-                geometry.coordinates,
-                mapRef,
-                removeMarkers,
-                setMultiRoute,
-                addMultiRoute,
-                setRoutePanel,
-                routePanel,
-                setIsClose,
-              )}
-              >
+              <Button onClick={() => handleClick(geometry.coordinates)}>
                 <FontAwesomeIcon icon={faRoute} />
               </Button>
               <AddToFavorites uid={uid} properties={properties} geometry={geometry} />
