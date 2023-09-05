@@ -18,26 +18,30 @@ import handlePlacesPanel from 'Utils/interactionWithPanel/handlePlacesPanel';
 import removeMarkers from 'Utils/Controls/removeMarkers';
 import Favorites from 'components/Favorites/Favorites';
 import useAuth from 'hooks/use-auth';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  currentPlacesPanel, currentIsClose, currentRoutePanel, setPlacesPanel, setIsClose, setRoutePanel,
+} from 'store/slices/controlsSlice';
 import { MapYContext } from './MapContext';
 
 import { RouteButton, Button } from './styled';
 
 function MapY({ isOpen, setIsOpen }) {
   const {
-    placesPanel,
-    setPlacesPanel,
     currentPlaces,
-    routePanel,
-    setRoutePanel,
     inputValue,
     setInputValue,
-    isClose,
-    setIsClose,
     multiRoute,
     setMultiRoute,
     uid,
     setUid,
   } = useContext(MapYContext);
+
+  const dispatch = useDispatch();
+
+  const placesPanel = useSelector(currentPlacesPanel);
+  const routePanel = useSelector(currentRoutePanel);
+  const isClose = useSelector(currentIsClose);
 
   const { id } = useAuth();
   useEffect(() => {
@@ -72,12 +76,14 @@ function MapY({ isOpen, setIsOpen }) {
       setIsOpen(true);
       setInputValue('');
     } else if (placesPanel) {
-      // eslint-disable-next-line max-len
-      handlePlacesPanel(setIsClose, isClose, multiRoute, setMultiRoute, setRoutePanel, setPlacesPanel, setIsOpen);
+      dispatch(setIsClose(!isClose));
+      handlePlacesPanel(multiRoute, setMultiRoute, setIsOpen);
+      dispatch(setRoutePanel(false));
+      dispatch(setPlacesPanel(false));
     } else {
       setIsOpen(true);
-      setRoutePanel(!routePanel);
-      setIsClose(!isClose);
+      dispatch(setRoutePanel(!routePanel));
+      dispatch(setIsClose(!isClose));
     }
   };
 

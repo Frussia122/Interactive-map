@@ -8,11 +8,9 @@ const searchProvider = async (
   mapRef,
   inputValue,
   setCurrentPlaces,
-  setPlacesPanel,
   filter,
   Filtername,
 ) => {
-  setPlacesPanel(true);
   setCurrentPlaces([]);
   const res = await getPlaces(inputValue, 0.1);
 

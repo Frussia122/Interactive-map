@@ -4,18 +4,19 @@ import MapCategory from 'UI/MapCategory/MapCategory';
 import RouteControl from 'UI/routeControl/RouteControl';
 import CurrentPlaces from 'components/CurrentPlaces/CurrentPlaces';
 import { MapYContext } from 'components/map/MapContext';
+import { currentRoutePanel, currentIsClose, currentPlacesPanel } from 'store/slices/controlsSlice';
+import { useSelector } from 'react-redux';
 import Wrapper from './styled';
 
 function Controls({ mapRef, isOpen }) {
   const {
-    routePanel,
-    placesPanel,
     currentPlaces,
-    setIsClose,
-    isClose,
     setCurrentPlaces,
-    setPlacesPanel,
   } = useContext(MapYContext);
+
+  const routePanel = useSelector(currentRoutePanel);
+  const placesPanel = useSelector(currentPlacesPanel);
+  const isClose = useSelector(currentIsClose);
 
   return (
     <Wrapper style={isOpen ? { left: '0' } : { left: '-100%' }}>
@@ -24,7 +25,6 @@ function Controls({ mapRef, isOpen }) {
       <CurrentPlaces
         mapRef={mapRef}
         currentPlaces={currentPlaces}
-        setIsClose={setIsClose}
         isClose={isClose}
       />
       )}
@@ -32,7 +32,6 @@ function Controls({ mapRef, isOpen }) {
         <MapCategory
           mapRef={mapRef}
           setCurrentPlaces={setCurrentPlaces}
-          setPlacesPanel={setPlacesPanel}
         />
       )}
     </Wrapper>

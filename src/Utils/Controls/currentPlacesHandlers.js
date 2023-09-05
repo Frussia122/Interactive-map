@@ -14,9 +14,6 @@ export const handleRoute = (
   removeMarkers,
   setMultiRoute,
   addMultiRoute,
-  setRoutePanel,
-  routePanel,
-  setIsClose,
 ) => {
   removeMarkers(mapRef);
   const lng = localStorage.getItem('currentLongitude');
@@ -24,7 +21,5 @@ export const handleRoute = (
   if (lat && lng) {
     const currentRoute = addMultiRoute(mapRef, [lat, lng], coords);
     setMultiRoute(currentRoute);
-    setRoutePanel(!routePanel);
-    setIsClose(true);
   }
 };
