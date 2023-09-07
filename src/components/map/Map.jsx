@@ -22,17 +22,20 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   currentPlacesPanel, currentIsClose, currentRoutePanel, setPlacesPanel, setIsClose, setRoutePanel,
 } from 'store/slices/controlsSlice';
+import {
+  currentInputValue,
+  currentMultiRoute,
+  AllPlaces,
+  setInputValue,
+  setMultiRoute,
+} from 'store/slices/controlsDataSlice';
+
 import { MapYContext } from './MapContext';
 
 import { RouteButton, Button } from './styled';
 
 function MapY({ isOpen, setIsOpen }) {
   const {
-    currentPlaces,
-    inputValue,
-    setInputValue,
-    multiRoute,
-    setMultiRoute,
     uid,
     setUid,
   } = useContext(MapYContext);
@@ -42,6 +45,9 @@ function MapY({ isOpen, setIsOpen }) {
   const placesPanel = useSelector(currentPlacesPanel);
   const routePanel = useSelector(currentRoutePanel);
   const isClose = useSelector(currentIsClose);
+  const inputValue = useSelector(currentInputValue);
+  const multiRoute = useSelector(currentMultiRoute);
+  const currentPlaces = useSelector(AllPlaces);
 
   const { id } = useAuth();
   useEffect(() => {
@@ -74,10 +80,11 @@ function MapY({ isOpen, setIsOpen }) {
     removeMarkers(mapRef);
     if (inputValue) {
       setIsOpen(true);
-      setInputValue('');
+      dispatch(setInputValue(''));
     } else if (placesPanel) {
       dispatch(setIsClose(!isClose));
-      handlePlacesPanel(multiRoute, setMultiRoute, setIsOpen);
+      dispatch(setMultiRoute(null));
+      handlePlacesPanel(multiRoute, setIsOpen);
       dispatch(setRoutePanel(false));
       dispatch(setPlacesPanel(false));
     } else {

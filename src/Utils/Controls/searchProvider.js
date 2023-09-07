@@ -1,4 +1,5 @@
 import getPlaces from 'services/getPlaces';
+import { setCurrentPlaces } from 'store/slices/controlsDataSlice';
 import removeMarkers from './removeMarkers';
 
 const { ymaps } = window;
@@ -7,11 +8,11 @@ const { ymaps } = window;
 const searchProvider = async (
   mapRef,
   inputValue,
-  setCurrentPlaces,
+  dispatch,
   filter,
   Filtername,
 ) => {
-  setCurrentPlaces([]);
+  // setCurrentPlaces([]);
   const res = await getPlaces(inputValue, 0.1);
 
   removeMarkers(mapRef);
@@ -46,9 +47,11 @@ const searchProvider = async (
     });
 
     if (filter === 'filter' && inputValue && filteredPlaces.length > 0) {
-      setCurrentPlaces(filteredPlaces[0]);
+      // setCurrentPlaces(filteredPlaces[0]);
+      dispatch(setCurrentPlaces(filteredPlaces[0]));
     }
-    setCurrentPlaces(filteredPlaces);
+    console.log(filteredPlaces);
+    dispatch(setCurrentPlaces(filteredPlaces));
   }
 
   return null;

@@ -1,11 +1,20 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
+
 import React, { useState, useEffect, useContext } from 'react';
-import { addSuggetstView, suggestEvent } from 'Utils/Controls/addSuggestView';
+import { addSuggestView, suggestEvent } from 'Utils/Controls/addSuggestView';
 import addMultiRoute from 'Utils/Controls/addMultiRoute';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { MapYContext } from 'components/map/MapContext';
 import RouteInfo from 'components/RouteInfo/RouteInfo';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  setMultiRoute,
+  currentMultiRoute,
+  currentRouteFrom,
+  currentRouteTo,
+  setRouteTo,
+  setRouteFrom,
+} from 'store/slices/controlsDataSlice';
 import routeInputs from './routeInputs';
 
 import routeTypes from './routeTypes';
@@ -19,45 +28,56 @@ import {
 } from './styled';
 
 function RouteControl({ mapRef }) {
-  const [routeFrom, setRouteFrom] = useState('');
-  const [routeTo, setRouteTo] = useState('');
+  const routeFrom = useSelector(currentRouteFrom);
+  const routeTo = useSelector(currentRouteTo);
+  const [localRouteTo, setLocalRouteTo] = useState('');
+  const [localRouteFrom, setLocalRouteFrom] = useState('');
   const [routeFromSuggest, setRouteFromSuggest] = useState('');
   const [routeToSuggest, setRouteToSuggest] = useState('');
   const [activeType, setActiveType] = useState(routeTypes[0].type);
   const [routeError, setRouteError] = useState(null);
-
-  const {
-    setMultiRoute,
-    multiRoute,
-  } = useContext(MapYContext);
+  const [debounceTimer, setDebounceTimer] = useState(null);
+  const multiRoute = useSelector(currentMultiRoute);
+  const dispatch = useDispatch();
 
   const { ymaps } = window;
 
   useEffect(() => {
     if (ymaps) {
       ymaps.ready(() => {
-        setRouteFromSuggest(addSuggetstView('routeFrom', 'yandex#map'));
-        setRouteToSuggest(addSuggetstView('routeTo', 'yandex#map'));
+        setRouteFromSuggest(addSuggestView('routeFrom', 'yandex#map'));
+        setRouteToSuggest(addSuggestView('routeTo', 'yandex#map'));
       });
     }
   }, []);
 
   const handleRouteChange = (e, type) => {
+    const { value } = e.target;
     if (type === 'from') {
-      setRouteFrom(e.target.value);
-      suggestEvent(routeFromSuggest, setRouteFrom);
+      setLocalRouteFrom(e.target.value);
     } else if (type === 'to') {
-      setRouteTo(e.target.value);
-      suggestEvent(routeToSuggest, setRouteTo);
+      setLocalRouteTo(e.target.value);
     }
+    clearTimeout(debounceTimer);
+
+    setDebounceTimer(setTimeout(() => {
+      if (type === 'from') {
+        suggestEvent(routeFromSuggest, dispatch, setRouteFrom, 300, setLocalRouteFrom);
+        dispatch(setRouteFrom(value));
+      } else if (type === 'to') {
+        suggestEvent(routeToSuggest, dispatch, setRouteTo, 300, setLocalRouteTo);
+        dispatch(setRouteTo(value));
+      }
+    }, 500));
   };
 
   const handleRouteClick = () => {
     if (routeFrom && routeTo) {
       const newMultiRoute = addMultiRoute(mapRef, routeFrom, routeTo, setRouteError);
-      setRouteFrom('');
-      setRouteTo('');
-      setMultiRoute(newMultiRoute);
+      dispatch(setRouteFrom(''));
+      dispatch(setRouteTo(''));
+      // console.log(newMultiRoute[0].model);
+      // dispatch(setMultiRoute(newMultiRoute[0].model));
     }
   };
 
@@ -89,7 +109,7 @@ function RouteControl({ mapRef }) {
       <InputWrapper>
         {routeInputs.map((input) => (
           <Input
-            value={input.id === 'routeTo' ? routeTo : routeFrom}
+            value={input.id === 'routeTo' ? localRouteTo : localRouteFrom}
             onChange={(e) => handleRouteChange(e, input.type)}
             id={input.id}
             key={input.id}

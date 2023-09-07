@@ -2,13 +2,13 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState, useContext } from 'react';
 import searchProvider from 'Utils/Controls/searchProvider';
-import { addSuggetstView, suggestEvent } from 'Utils/Controls/addSuggestView';
+import { addSuggestView, suggestEvent } from 'Utils/Controls/addSuggestView';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearchLocation } from '@fortawesome/free-solid-svg-icons';
-import { MapYContext } from 'components/map/MapContext';
 import { useSelector, useDispatch } from 'react-redux';
-import { setRoutePanel, setPlacesPanel } from 'store/slices/controlsSlice';
+import { setRoutePanel, currentPlacesPanel, setPlacesPanel } from 'store/slices/controlsSlice';
+import { currentInputValue, setInputValue } from 'store/slices/controlsDataSlice';
 import {
   Wrapper,
   Form,
@@ -17,16 +17,20 @@ import {
 } from './styled';
 
 function SearchControl({ mapRef, setIsOpen }) {
-  const {
-    inputValue,
-    setInputValue,
-    setCurrentPlaces,
-  } = useContext(MapYContext);
-
+  const [localValue, setLocalValue] = useState('');
   const [currentSuggest, setCurrentSuggest] = useState('');
-
   const { ymaps } = window;
   const dispatch = useDispatch();
+  const inputValue = useSelector(currentInputValue);
+  const [debounceTimer, setDebounceTimer] = useState(null);
+
+  useEffect(() => {
+    if (ymaps) {
+      ymaps.ready(() => {
+        setCurrentSuggest(addSuggestView('suggest', 'yandex#search'));
+      });
+    }
+  }, []);
 
   const handleSearch = () => {
     if (inputValue) {
@@ -35,25 +39,26 @@ function SearchControl({ mapRef, setIsOpen }) {
       searchProvider(
         mapRef,
         inputValue,
-        setCurrentPlaces,
+        dispatch,
         '',
         '',
       );
-      setInputValue('');
+      dispatch(setInputValue(''));
     }
   };
 
-  useEffect(() => {
-    if (ymaps) {
-      ymaps.ready(() => {
-        setCurrentSuggest(addSuggetstView('suggest', 'yandex#search'));
-      });
-    }
-  }, []);
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const handleChange = (e) => {
-    setInputValue(e.target.value);
-    suggestEvent(currentSuggest, setInputValue);
+  const handleInputChange = (e) => {
+    const { value } = e.target;
+    setSearchTerm(value);
+
+    clearTimeout(debounceTimer);
+
+    setDebounceTimer(setTimeout(() => {
+      suggestEvent(currentSuggest, dispatch, setInputValue, 1000, setSearchTerm);
+      dispatch(setInputValue(value));
+    }, 1000));
   };
 
   return (
@@ -61,8 +66,8 @@ function SearchControl({ mapRef, setIsOpen }) {
       <Form id="form">
         <Input
           placeholder="Поиск мест и адресов"
-          value={inputValue}
-          onChange={(e) => handleChange(e)}
+          value={searchTerm}
+          onChange={handleInputChange}
           id="suggest"
         />
         <Button type="button" onClick={handleSearch}>

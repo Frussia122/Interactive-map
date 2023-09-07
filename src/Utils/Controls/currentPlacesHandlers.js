@@ -12,14 +12,15 @@ export const handleRoute = (
   coords,
   mapRef,
   removeMarkers,
-  setMultiRoute,
   addMultiRoute,
 ) => {
   removeMarkers(mapRef);
   const lng = localStorage.getItem('currentLongitude');
   const lat = localStorage.getItem('currentLatitude');
+  let currentRoute = null;
+
   if (lat && lng) {
-    const currentRoute = addMultiRoute(mapRef, [lat, lng], coords);
-    setMultiRoute(currentRoute);
+    currentRoute = addMultiRoute(mapRef, [lat, lng], coords);
   }
+  return currentRoute;
 };

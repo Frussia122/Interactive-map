@@ -1,7 +1,7 @@
-import React, { useEffect, useContext, useState } from 'react';
-import { MapYContext } from 'components/map/MapContext';
+import React, { useEffect, useState } from 'react';
 import duck from 'assets/PreLoaders/duck.gif';
-
+import { useSelector } from 'react-redux';
+import { currentMultiRoute } from 'store/slices/controlsDataSlice';
 import {
   Wrapper,
   Routes,
@@ -13,7 +13,7 @@ import {
 } from './styled';
 
 function RouteInfo() {
-  const { multiRoute } = useContext(MapYContext);
+  const multiRoute = useSelector(currentMultiRoute);
   const [routeData, setRouteData] = useState([]);
   const [activeRoute, setActiveRoute] = useState(null);
 
@@ -21,7 +21,6 @@ function RouteInfo() {
     if (multiRoute) {
       multiRoute.model.events.add('requestsuccess', () => {
         const routes = multiRoute.getRoutes().toArray();
-
         const data = routes.map((route) => ({
           distance: route.properties.get('distance').text,
           duration: route.properties.get('duration').text,

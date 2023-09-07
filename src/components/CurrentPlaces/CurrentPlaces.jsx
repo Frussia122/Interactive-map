@@ -10,8 +10,9 @@ import removeMarkers from 'Utils/Controls/removeMarkers';
 import AddToFavorites from 'UI/addToFavorites/AddToFavorites';
 import { handleRoute, handlePanToLocation } from 'Utils/Controls/currentPlacesHandlers';
 import duck from 'assets/PreLoaders/duck.gif';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setIsClose, setRoutePanel } from 'store/slices/controlsSlice';
+import { AllPlaces, setMultiRoute } from 'store/slices/controlsDataSlice';
 import {
   Wrapper,
   PlaceItem,
@@ -24,11 +25,10 @@ import {
   Preloader,
 } from './styled';
 
-function CurrentPlaces({ currentPlaces, mapRef }) {
+function CurrentPlaces({ mapRef }) {
   const dispatch = useDispatch();
-
+  const currentPlaces = useSelector(AllPlaces);
   const {
-    setMultiRoute,
     uid,
   } = useContext(MapYContext);
 
@@ -46,13 +46,16 @@ function CurrentPlaces({ currentPlaces, mapRef }) {
 
   const handleClick = (coords) => {
     dispatch(setRoutePanel(true));
-    handleRoute(
+    const route = handleRoute(
       coords,
       mapRef,
       removeMarkers,
-      setMultiRoute,
       addMultiRoute,
     );
+    if (route) {
+      console.log(route);
+      dispatch(setMultiRoute(route));
+    }
   };
   return (
     <Wrapper>

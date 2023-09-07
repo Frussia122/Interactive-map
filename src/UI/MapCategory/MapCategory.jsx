@@ -8,12 +8,12 @@ import categories from './categories';
 
 import { CategoriesWrapper, CategoryItem } from './styled';
 
-function MapCategory({ mapRef, setCurrentPlaces }) {
+function MapCategory({ mapRef }) {
   const dispatch = useDispatch();
 
   const handleChosenPlaces = (query) => {
     dispatch(setPlacesPanel(true));
-    searchProvider(mapRef, query, setCurrentPlaces);
+    searchProvider(mapRef, query, dispatch);
   };
   return (
     <CategoriesWrapper>
