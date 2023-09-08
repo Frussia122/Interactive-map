@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable react/prop-types */
+import React, { useState, useEffect } from 'react';
 import duck from 'assets/PreLoaders/duck.gif';
-import { useSelector } from 'react-redux';
-import { currentMultiRoute } from 'store/slices/controlsDataSlice';
 import {
   Wrapper,
   Routes,
@@ -12,29 +11,29 @@ import {
   Preloader,
 } from './styled';
 
-function RouteInfo() {
-  const multiRoute = useSelector(currentMultiRoute);
+function RouteInfo({ currentRoute }) {
+  // eslint-disable-next-line no-unused-vars
   const [routeData, setRouteData] = useState([]);
   const [activeRoute, setActiveRoute] = useState(null);
 
   useEffect(() => {
-    if (multiRoute) {
-      multiRoute.model.events.add('requestsuccess', () => {
-        const routes = multiRoute.getRoutes().toArray();
+    if (currentRoute) {
+      currentRoute.model.events.add('requestsuccess', () => {
+        const routes = currentRoute.getRoutes().toArray();
         const data = routes.map((route) => ({
           distance: route.properties.get('distance').text,
           duration: route.properties.get('duration').text,
           routeObject: route,
         }));
-
+        console.log(data);
         setRouteData(data);
         setActiveRoute(data[0]);
       });
     }
-  }, [multiRoute]);
+  }, [currentRoute]);
 
   const handleRouteClick = (route) => {
-    multiRoute.setActiveRoute(route.routeObject);
+    currentRoute.setActiveRoute(route.routeObject);
     setActiveRoute(route);
   };
 

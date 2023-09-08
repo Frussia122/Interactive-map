@@ -3,16 +3,13 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationArrow, faRoute } from '@fortawesome/free-solid-svg-icons';
-import addMultiRoute from 'Utils/Controls/addMultiRoute';
 import { MapYContext } from 'components/map/MapContext';
-
-import removeMarkers from 'Utils/Controls/removeMarkers';
+import { handlePanToLocation } from 'Utils/Controls/currentPlacesHandlers';
 import AddToFavorites from 'UI/addToFavorites/AddToFavorites';
-import { handleRoute, handlePanToLocation } from 'Utils/Controls/currentPlacesHandlers';
 import duck from 'assets/PreLoaders/duck.gif';
 import { useDispatch, useSelector } from 'react-redux';
 import { setIsClose, setRoutePanel } from 'store/slices/controlsSlice';
-import { AllPlaces, setMultiRoute } from 'store/slices/controlsDataSlice';
+import { AllPlaces, setMultiRouteCoords } from 'store/slices/controlsDataSlice';
 import {
   Wrapper,
   PlaceItem,
@@ -46,16 +43,7 @@ function CurrentPlaces({ mapRef }) {
 
   const handleClick = (coords) => {
     dispatch(setRoutePanel(true));
-    const route = handleRoute(
-      coords,
-      mapRef,
-      removeMarkers,
-      addMultiRoute,
-    );
-    if (route) {
-      console.log(route);
-      dispatch(setMultiRoute(route));
-    }
+    dispatch(setMultiRouteCoords(coords));
   };
   return (
     <Wrapper>

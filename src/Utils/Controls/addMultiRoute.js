@@ -24,7 +24,7 @@ const addMultiRoute = (mapRef, routeFrom, routeTo) => {
 
   mapRef.current.geoObjects.add(newMultiRoute);
   multiRoutes.push(newMultiRoute);
-  console.log(multiRoutes);
+  console.log(newMultiRoute);
   return newMultiRoute;
 };
 

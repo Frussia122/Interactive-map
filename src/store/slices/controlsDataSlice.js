@@ -5,7 +5,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   inputValue: '',
   places: null,
-  multiRoute: null,
+  multiRouteCoords: null,
   routeFrom: '',
   routeTo: '',
 };
@@ -20,8 +20,8 @@ const controlsDataSlice = createSlice({
     setCurrentPlaces(state, action) {
       state.places = action.payload;
     },
-    setMultiRoute(state, action) {
-      state.multiRoute = action.payload;
+    setMultiRouteCoords(state, action) {
+      state.multiRouteCoords = action.payload;
     },
     setRouteTo(state, action) {
       state.routeTo = action.payload;
@@ -34,14 +34,14 @@ const controlsDataSlice = createSlice({
 
 export const currentInputValue = (state) => state.controlsData.inputValue;
 export const AllPlaces = (state) => state.controlsData.places;
-export const currentMultiRoute = (state) => state.controlsData.multiRoute;
+export const currentMultiRouteCoords = (state) => state.controlsData.multiRouteCoords;
 export const currentRouteFrom = (state) => state.controlsData.routeFrom;
 export const currentRouteTo = (state) => state.controlsData.routeTo;
 
 export const {
   setInputValue,
   setCurrentPlaces,
-  setMultiRoute,
+  setMultiRouteCoords,
   setRouteTo,
   setRouteFrom,
 } = controlsDataSlice.actions;

@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { configureStore } from '@reduxjs/toolkit';
 import userRecucer from './slices/userSlice';
 import favoritesReducer from './slices/favoritesSlice';

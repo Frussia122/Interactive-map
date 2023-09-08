@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import MapCategory from 'UI/MapCategory/MapCategory';
 import RouteControl from 'UI/routeControl/RouteControl';
 import CurrentPlaces from 'components/CurrentPlaces/CurrentPlaces';
@@ -17,7 +17,9 @@ function Controls({ mapRef, isOpen }) {
   const routePanel = useSelector(currentRoutePanel);
   const placesPanel = useSelector(currentPlacesPanel);
   const isClose = useSelector(currentIsClose);
-
+  useEffect(() => {
+    console.log(mapRef);
+  }, []);
   return (
     <Wrapper style={isOpen ? { left: '0' } : { left: '-100%' }}>
       {routePanel && <RouteControl mapRef={mapRef} />}

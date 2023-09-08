@@ -45,6 +45,7 @@ function AddToFavorites({ properties, geometry, uid }) {
         await addDoc(collection(db, `${uid}`), {
           place,
         });
+        console.log(place);
         dispatch(addToFavorite(place));
       } catch (e) {
         console.error('Error adding document: ', e);

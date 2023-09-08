@@ -24,10 +24,8 @@ import {
 } from 'store/slices/controlsSlice';
 import {
   currentInputValue,
-  currentMultiRoute,
   AllPlaces,
   setInputValue,
-  setMultiRoute,
 } from 'store/slices/controlsDataSlice';
 
 import { MapYContext } from './MapContext';
@@ -46,7 +44,6 @@ function MapY({ isOpen, setIsOpen }) {
   const routePanel = useSelector(currentRoutePanel);
   const isClose = useSelector(currentIsClose);
   const inputValue = useSelector(currentInputValue);
-  const multiRoute = useSelector(currentMultiRoute);
   const currentPlaces = useSelector(AllPlaces);
 
   const { id } = useAuth();
@@ -82,9 +79,12 @@ function MapY({ isOpen, setIsOpen }) {
       setIsOpen(true);
       dispatch(setInputValue(''));
     } else if (placesPanel) {
+      mapRef.current.geoObjects.each((geoObject) => {
+        if (geoObject instanceof ymaps.multiRouter.MultiRoute) {
+          mapRef.current.geoObjects.remove(geoObject);
+        }
+      });
       dispatch(setIsClose(!isClose));
-      dispatch(setMultiRoute(null));
-      handlePlacesPanel(multiRoute, setIsOpen);
       dispatch(setRoutePanel(false));
       dispatch(setPlacesPanel(false));
     } else {

@@ -8,13 +8,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import RouteInfo from 'components/RouteInfo/RouteInfo';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  setMultiRoute,
-  currentMultiRoute,
+  currentMultiRouteCoords,
   currentRouteFrom,
   currentRouteTo,
   setRouteTo,
   setRouteFrom,
+  setMultiRouteCoords,
 } from 'store/slices/controlsDataSlice';
+import removeMarkers from 'Utils/Controls/removeMarkers';
 import routeInputs from './routeInputs';
 
 import routeTypes from './routeTypes';
@@ -30,6 +31,7 @@ import {
 function RouteControl({ mapRef }) {
   const routeFrom = useSelector(currentRouteFrom);
   const routeTo = useSelector(currentRouteTo);
+  const [currentRoute, setCurrentRoute] = useState(null);
   const [localRouteTo, setLocalRouteTo] = useState('');
   const [localRouteFrom, setLocalRouteFrom] = useState('');
   const [routeFromSuggest, setRouteFromSuggest] = useState('');
@@ -37,7 +39,7 @@ function RouteControl({ mapRef }) {
   const [activeType, setActiveType] = useState(routeTypes[0].type);
   const [routeError, setRouteError] = useState(null);
   const [debounceTimer, setDebounceTimer] = useState(null);
-  const multiRoute = useSelector(currentMultiRoute);
+  const multiRouteCoords = useSelector(currentMultiRouteCoords);
   const dispatch = useDispatch();
 
   const { ymaps } = window;
@@ -50,6 +52,20 @@ function RouteControl({ mapRef }) {
       });
     }
   }, []);
+
+  useEffect(() => {
+    if (multiRouteCoords) {
+      removeMarkers(mapRef);
+      const lng = localStorage.getItem('currentLongitude');
+      const lat = localStorage.getItem('currentLatitude');
+      setCurrentRoute(null);
+
+      if (lat && lng) {
+        setCurrentRoute(addMultiRoute(mapRef, [lat, lng], multiRouteCoords));
+      }
+    }
+    dispatch(setMultiRouteCoords(null));
+  }, [multiRouteCoords]);
 
   const handleRouteChange = (e, type) => {
     const { value } = e.target;
@@ -73,18 +89,16 @@ function RouteControl({ mapRef }) {
 
   const handleRouteClick = () => {
     if (routeFrom && routeTo) {
-      const newMultiRoute = addMultiRoute(mapRef, routeFrom, routeTo, setRouteError);
+      setCurrentRoute(addMultiRoute(mapRef, routeFrom, routeTo, setRouteError));
       dispatch(setRouteFrom(''));
       dispatch(setRouteTo(''));
-      // console.log(newMultiRoute[0].model);
-      // dispatch(setMultiRoute(newMultiRoute[0].model));
     }
   };
 
   const handleType = (type) => {
-    if (multiRoute) {
+    if (currentRoute) {
       setActiveType(type);
-      multiRoute.model.setParams({
+      currentRoute.model.setParams({
         routingMode: type,
       });
     }
@@ -118,7 +132,7 @@ function RouteControl({ mapRef }) {
         ))}
       </InputWrapper>
       <Button onClick={handleRouteClick}>Проложить маршрут</Button>
-      {multiRoute && <RouteInfo />}
+      {currentRoute && <RouteInfo currentRoute={currentRoute} />}
     </Wrapper>
   );
 }

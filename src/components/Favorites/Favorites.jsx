@@ -8,7 +8,10 @@ import {
 } from 'firebase/firestore';
 import db from 'firebaseConfig';
 import { useDispatch, useSelector } from 'react-redux';
-import { addToFavorite, removeFromFavorite, clearFavorites } from 'store/slices/favoritesSlice';
+import {
+  setFavorite,
+  clearFavorites,
+} from 'store/slices/favoritesSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBookmark } from '@fortawesome/free-solid-svg-icons';
 import searchProvider from 'Utils/Controls/searchProvider';
@@ -34,30 +37,20 @@ function Favorites({ userId, mapRef, setIsOpen }) {
   const [isLoading, setIsLoading] = useState(true);
   const [isFavorites, setIsFavorites] = useState(true);
 
-  const handleDataChange = (snapshot) => {
-    snapshot.docChanges().forEach((change) => {
-      const { place } = change.doc.data();
-
-      if (change.type === 'added') {
-        dispatch(addToFavorite(place));
-      } else if (change.type === 'removed') {
-        dispatch(removeFromFavorite(place));
-      }
-    });
-  };
-
   const subscribeToData = () => {
     const favoritesRef = collection(db, `${userId}`);
     const favoritesQuery = query(favoritesRef);
-    const unsubscribe = onSnapshot(favoritesQuery, handleDataChange);
+    const unsubscribe = onSnapshot(favoritesQuery);
     return unsubscribe;
   };
 
   const readData = async () => {
     const querySnapshot = await getDocs(collection(db, `${userId}`));
-    querySnapshot.forEach((doc) => {
-      dispatch(addToFavorite(doc.data().place));
+    const ebalovo = [];
+    querySnapshot.docs.forEach((doc) => {
+      ebalovo.push(doc.data().place);
     });
+    dispatch(setFavorite(ebalovo));
   };
 
   useEffect(() => {
