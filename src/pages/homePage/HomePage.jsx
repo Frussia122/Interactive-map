@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { removeUser, setUser } from 'store/slices/userSlice';
-import useAuth from 'hooks/use-auth';
+import { removeUser, setUser } from 'shared/models/slices/userSlice';
+import useAuth from 'shared/hooks/use-auth';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { MapYProvider } from 'components/map/MapContext';
 import MapY from 'components/map/Map';
 import Button from './styled';
 
@@ -42,9 +41,7 @@ function HomePage() {
 
   return (
     <>
-      <MapYProvider>
-        <MapY isOpen={isOpen} setIsOpen={setIsOpen} />
-      </MapYProvider>
+      <MapY isOpen={isOpen} setIsOpen={setIsOpen} />
       <Button
         className="logOut"
         style={isOpen

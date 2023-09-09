@@ -1,0 +1,1 @@
+export { FavoritePlace } from './ui/index';

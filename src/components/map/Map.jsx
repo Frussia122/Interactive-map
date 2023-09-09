@@ -1,52 +1,49 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
+
 import React, {
   useEffect,
   useRef,
-  useContext,
 } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowPointer, faClose, faRoute } from '@fortawesome/free-solid-svg-icons';
-
-import initializeMap from 'Utils/Map/initializeMap';
-import getCurrentPosition from 'Utils/Map/getCurrentPosition';
-import createMarker from 'Utils/Map/createMarker';
-import SearchControl from 'UI/serachControl/SearchControl';
-import CurrentLocationControl from 'UI/currentLocationControl/CurrentLocationControl';
-import Controls from 'components/Controls/Controls';
-import handlePlacesPanel from 'Utils/interactionWithPanel/handlePlacesPanel';
-import removeMarkers from 'Utils/Controls/removeMarkers';
-import Favorites from 'components/Favorites/Favorites';
-import useAuth from 'hooks/use-auth';
+import initializeMap from 'shared/utils/map/initializeMap';
+import getCurrentPosition from 'shared/utils/map/getCurrentPosition';
+import createMarker from 'shared/utils/map/createMarker';
+import removeMarkers from 'shared/utils/controls/removeMarkers';
+import { Controls } from 'widgets/controls';
+import { SearchPanel } from 'widgets/searchPanel';
+import { Favorites } from 'widgets/favorites';
+import { LocationButton } from 'features/location';
+import useAuth from 'shared/hooks/use-auth';
 import { useSelector, useDispatch } from 'react-redux';
+import { 
+  currentPlacesPanel, 
+  currentIsClose, 
+  currentRoutePanel, 
+  setPlacesPanel, 
+  setIsClose, 
+  setRoutePanel,
+} from 'shared/models/slices/controlsSlice';
+import { currentUser } from 'shared/models/slices/userSlice';
 import {
-  currentPlacesPanel, currentIsClose, currentRoutePanel, setPlacesPanel, setIsClose, setRoutePanel,
-} from 'store/slices/controlsSlice';
-import { MapYContext } from './MapContext';
+  currentInputValue,
+  AllPlaces,
+  setInputValue,
+} from 'shared/models/slices/controlsDataSlice';
 
 import { RouteButton, Button } from './styled';
 
-function MapY({ isOpen, setIsOpen }) {
-  const {
-    currentPlaces,
-    inputValue,
-    setInputValue,
-    multiRoute,
-    setMultiRoute,
-    uid,
-    setUid,
-  } = useContext(MapYContext);
 
+
+function MapY({ isOpen, setIsOpen }) {
   const dispatch = useDispatch();
 
   const placesPanel = useSelector(currentPlacesPanel);
   const routePanel = useSelector(currentRoutePanel);
   const isClose = useSelector(currentIsClose);
+  const inputValue = useSelector(currentInputValue);
+  const uid = useSelector(currentUser);
 
   const { id } = useAuth();
-  useEffect(() => {
-    setUid(id);
-  }, [id]);
 
   const { ymaps } = window;
   const mapRef = useRef(null);
@@ -74,10 +71,14 @@ function MapY({ isOpen, setIsOpen }) {
     removeMarkers(mapRef);
     if (inputValue) {
       setIsOpen(true);
-      setInputValue('');
+      dispatch(setInputValue(''));
     } else if (placesPanel) {
+      mapRef.current.geoObjects.each((geoObject) => {
+        if (geoObject instanceof ymaps.multiRouter.MultiRoute) {
+          mapRef.current.geoObjects.remove(geoObject);
+        }
+      });
       dispatch(setIsClose(!isClose));
-      handlePlacesPanel(multiRoute, setMultiRoute, setIsOpen);
       dispatch(setRoutePanel(false));
       dispatch(setPlacesPanel(false));
     } else {
@@ -92,10 +93,9 @@ function MapY({ isOpen, setIsOpen }) {
       id="map"
       ref={mapRef}
     >
-      <SearchControl
+      <SearchPanel
         setIsOpen={setIsOpen}
         mapRef={mapRef}
-        currentPlaces={currentPlaces}
       />
       <RouteButton onClick={handleRoutePanel}>
         <FontAwesomeIcon icon={isClose || inputValue ? faClose : faRoute} />
@@ -112,8 +112,10 @@ function MapY({ isOpen, setIsOpen }) {
         />
       </Button>
       <Controls mapRef={mapRef} isOpen={isOpen} />
-      <CurrentLocationControl mapRef={mapRef} />
-      {uid && <Favorites setIsOpen={setIsOpen} userId={id} mapRef={mapRef} />}
+      <LocationButton mapRef={mapRef} />
+
+      {uid && <Favorites setIsOpen={setIsOpen} mapRef={mapRef} />}
+  
     </div>
   );
 }
