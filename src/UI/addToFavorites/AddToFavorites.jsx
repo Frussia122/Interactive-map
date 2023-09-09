@@ -15,9 +15,11 @@ import {
 import db from 'firebaseConfig';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeFromFavorite, addToFavorite } from 'store/slices/favoritesSlice';
+import { currentUser } from 'store/slices/userSlice';
 
-function AddToFavorites({ properties, geometry, uid }) {
+function AddToFavorites({ properties, geometry }) {
   const dispatch = useDispatch();
+  const uid = useSelector(currentUser);
   const favorites = useSelector((state) => state.favorite.favorites);
   const place = {
     id: properties.CompanyMetaData.id,

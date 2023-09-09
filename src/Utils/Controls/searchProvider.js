@@ -1,4 +1,5 @@
 import getPlaces from 'services/getPlaces';
+import { setPlacesPanel } from 'store/slices/controlsSlice';
 import { setCurrentPlaces } from 'store/slices/controlsDataSlice';
 import removeMarkers from './removeMarkers';
 
@@ -47,13 +48,11 @@ const searchProvider = async (
     });
 
     if (filter === 'filter' && inputValue && filteredPlaces.length > 0) {
-      // setCurrentPlaces(filteredPlaces[0]);
       dispatch(setCurrentPlaces(filteredPlaces[0]));
     }
-    console.log(filteredPlaces);
     dispatch(setCurrentPlaces(filteredPlaces));
   }
-
+  dispatch(setPlacesPanel(true));
   return null;
 };
 

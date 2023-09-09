@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   collection,
   getDocs,
@@ -15,8 +15,8 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBookmark } from '@fortawesome/free-solid-svg-icons';
 import searchProvider from 'Utils/Controls/searchProvider';
-import { MapYContext } from 'components/map/MapContext';
 import duck from 'assets/PreLoaders/duck.gif';
+import { currentUser } from 'store/slices/userSlice';
 import {
   Button,
   Wrapper,
@@ -26,17 +26,12 @@ import {
   Empty,
 } from './styled';
 
-function Favorites({ userId, mapRef, setIsOpen }) {
-  const {
-    setPlacesPanel,
-    setCurrentPlaces,
-  } = useContext(MapYContext);
-
+function Favorites({ mapRef, setIsOpen }) {
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorite.favorites);
   const [isLoading, setIsLoading] = useState(true);
   const [isFavorites, setIsFavorites] = useState(true);
-
+  const userId = useSelector(currentUser);
   const subscribeToData = () => {
     const favoritesRef = collection(db, `${userId}`);
     const favoritesQuery = query(favoritesRef);
@@ -77,7 +72,7 @@ function Favorites({ userId, mapRef, setIsOpen }) {
   const handleSearch = (inputValue, name) => {
     setIsFavorites(!isFavorites);
     setIsOpen(true);
-    searchProvider(mapRef, inputValue, setCurrentPlaces, setPlacesPanel, 'filter', name);
+    searchProvider(mapRef, inputValue, dispatch, 'filter', name);
   };
   return (
     <>

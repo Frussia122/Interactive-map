@@ -36,7 +36,6 @@ const favoriteSlice = createSlice({
   },
 });
 
-// ...
 export const {
   setFavorite,
   addToFavorite,

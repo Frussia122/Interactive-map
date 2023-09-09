@@ -22,22 +22,16 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   currentPlacesPanel, currentIsClose, currentRoutePanel, setPlacesPanel, setIsClose, setRoutePanel,
 } from 'store/slices/controlsSlice';
+import { currentUser } from 'store/slices/userSlice';
 import {
   currentInputValue,
   AllPlaces,
   setInputValue,
 } from 'store/slices/controlsDataSlice';
 
-import { MapYContext } from './MapContext';
-
 import { RouteButton, Button } from './styled';
 
 function MapY({ isOpen, setIsOpen }) {
-  const {
-    uid,
-    setUid,
-  } = useContext(MapYContext);
-
   const dispatch = useDispatch();
 
   const placesPanel = useSelector(currentPlacesPanel);
@@ -45,11 +39,8 @@ function MapY({ isOpen, setIsOpen }) {
   const isClose = useSelector(currentIsClose);
   const inputValue = useSelector(currentInputValue);
   const currentPlaces = useSelector(AllPlaces);
-
+  const uid = useSelector(currentUser);
   const { id } = useAuth();
-  useEffect(() => {
-    setUid(id);
-  }, [id]);
 
   const { ymaps } = window;
   const mapRef = useRef(null);
@@ -120,7 +111,7 @@ function MapY({ isOpen, setIsOpen }) {
       </Button>
       <Controls mapRef={mapRef} isOpen={isOpen} />
       <CurrentLocationControl mapRef={mapRef} />
-      {uid && <Favorites setIsOpen={setIsOpen} userId={id} mapRef={mapRef} />}
+      {uid && <Favorites setIsOpen={setIsOpen} mapRef={mapRef} />}
     </div>
   );
 }

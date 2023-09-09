@@ -1,9 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/prop-types */
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationArrow, faRoute } from '@fortawesome/free-solid-svg-icons';
-import { MapYContext } from 'components/map/MapContext';
 import { handlePanToLocation } from 'Utils/Controls/currentPlacesHandlers';
 import AddToFavorites from 'UI/addToFavorites/AddToFavorites';
 import duck from 'assets/PreLoaders/duck.gif';
@@ -25,9 +24,6 @@ import {
 function CurrentPlaces({ mapRef }) {
   const dispatch = useDispatch();
   const currentPlaces = useSelector(AllPlaces);
-  const {
-    uid,
-  } = useContext(MapYContext);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -69,7 +65,7 @@ function CurrentPlaces({ mapRef }) {
               <Button onClick={() => handleClick(geometry.coordinates)}>
                 <FontAwesomeIcon icon={faRoute} />
               </Button>
-              <AddToFavorites uid={uid} properties={properties} geometry={geometry} />
+              <AddToFavorites properties={properties} geometry={geometry} />
             </ButtonWrapper>
           </PlaceItem>
         ))

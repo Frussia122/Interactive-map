@@ -59,7 +59,7 @@ function RouteControl({ mapRef }) {
       const lng = localStorage.getItem('currentLongitude');
       const lat = localStorage.getItem('currentLatitude');
       setCurrentRoute(null);
-
+      console.log(multiRouteCoords);
       if (lat && lng) {
         setCurrentRoute(addMultiRoute(mapRef, [lat, lng], multiRouteCoords));
       }
