@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { Field, ErrorMessage, Form } from 'formik';
 
 export const AuthWraper = styled(Form)`

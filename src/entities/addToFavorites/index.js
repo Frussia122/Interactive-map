@@ -1,0 +1,1 @@
+export { AddToFavorites } from './ui/index';

@@ -1,35 +1,38 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
+
 import React, {
   useEffect,
   useRef,
-  useContext,
 } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowPointer, faClose, faRoute } from '@fortawesome/free-solid-svg-icons';
-
-import initializeMap from 'Utils/Map/initializeMap';
-import getCurrentPosition from 'Utils/Map/getCurrentPosition';
-import createMarker from 'Utils/Map/createMarker';
-import SearchControl from 'UI/serachControl/SearchControl';
-import CurrentLocationControl from 'UI/currentLocationControl/CurrentLocationControl';
-import Controls from 'components/Controls/Controls';
-import handlePlacesPanel from 'Utils/interactionWithPanel/handlePlacesPanel';
-import removeMarkers from 'Utils/Controls/removeMarkers';
-import Favorites from 'components/Favorites/Favorites';
-import useAuth from 'hooks/use-auth';
+import initializeMap from 'shared/utils/map/initializeMap';
+import getCurrentPosition from 'shared/utils/map/getCurrentPosition';
+import createMarker from 'shared/utils/map/createMarker';
+import removeMarkers from 'shared/utils/controls/removeMarkers';
+import { Controls } from 'widgets/controls';
+import { SearchPanel } from 'widgets/searchPanel';
+import { Favorites } from 'widgets/favorites';
+import { LocationButton } from 'features/location';
+import useAuth from 'shared/hooks/use-auth';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  currentPlacesPanel, currentIsClose, currentRoutePanel, setPlacesPanel, setIsClose, setRoutePanel,
-} from 'store/slices/controlsSlice';
-import { currentUser } from 'store/slices/userSlice';
+import { 
+  currentPlacesPanel, 
+  currentIsClose, 
+  currentRoutePanel, 
+  setPlacesPanel, 
+  setIsClose, 
+  setRoutePanel,
+} from 'shared/models/slices/controlsSlice';
+import { currentUser } from 'shared/models/slices/userSlice';
 import {
   currentInputValue,
   AllPlaces,
   setInputValue,
-} from 'store/slices/controlsDataSlice';
+} from 'shared/models/slices/controlsDataSlice';
 
 import { RouteButton, Button } from './styled';
+
+
 
 function MapY({ isOpen, setIsOpen }) {
   const dispatch = useDispatch();
@@ -38,8 +41,8 @@ function MapY({ isOpen, setIsOpen }) {
   const routePanel = useSelector(currentRoutePanel);
   const isClose = useSelector(currentIsClose);
   const inputValue = useSelector(currentInputValue);
-  const currentPlaces = useSelector(AllPlaces);
   const uid = useSelector(currentUser);
+
   const { id } = useAuth();
 
   const { ymaps } = window;
@@ -90,10 +93,9 @@ function MapY({ isOpen, setIsOpen }) {
       id="map"
       ref={mapRef}
     >
-      <SearchControl
+      <SearchPanel
         setIsOpen={setIsOpen}
         mapRef={mapRef}
-        currentPlaces={currentPlaces}
       />
       <RouteButton onClick={handleRoutePanel}>
         <FontAwesomeIcon icon={isClose || inputValue ? faClose : faRoute} />
@@ -110,8 +112,10 @@ function MapY({ isOpen, setIsOpen }) {
         />
       </Button>
       <Controls mapRef={mapRef} isOpen={isOpen} />
-      <CurrentLocationControl mapRef={mapRef} />
+      <LocationButton mapRef={mapRef} />
+
       {uid && <Favorites setIsOpen={setIsOpen} mapRef={mapRef} />}
+  
     </div>
   );
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
-import { setUser } from 'store/slices/userSlice';
+import { setUser } from 'shared/models/slices/userSlice';
 import AuthForm from '../authForm/AuthForm';
 
 function SignIn() {
